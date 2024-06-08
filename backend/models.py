@@ -4,6 +4,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+class Vendedores(db.Model):
+    __tablename__ = 'vendedores'
+    id = db.Column(db.Integer, primary_key=True)
+    nombre_de_usuario = db.Column(db.String(255), nullable=False)
+    
 class Autos(db.Model): #se encarga Atu
     __tablename__ = 'autos'
     id = db.Column(db.Integer, primary_key=True)
