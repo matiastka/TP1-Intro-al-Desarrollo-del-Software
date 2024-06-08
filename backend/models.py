@@ -4,19 +4,17 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class Author(db.Model):
-    __tablename__ = 'authors'
+class Autos(db.Model): #se encarga Atu
+    __tablename__ = 'autos'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.now())
-    books = db.relationship("Book")
-
-class Book(db.Model): #se encarga Atu
-    __tablename__ = 'books'
-    id = db.Column(db.Integer, primary_key=True)
-    isbn = db.Column(db.String(255), nullable=False)
-    name = db.Column(db.String(255), nullable=False)
-    cant_pages = db.Column(db.Integer, nullable=False, default=0)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.now())
-    author_id = db.Column(db.Integer, db.ForeignKey('authors.id'))
+    nombre_auto = db.Column(db.String(255), nullable=False)
+    marca = db.Column(db.String(255), nullable=False)
+    color = db.Column(db.String(255), nullable=False)
+    cant_asientos = db.Column(db.Integer, nullable=False)
+    tipo_baul = db.Column(db.String(255), nullable=False)
+    caja_automatica = db.Column(db.Boolean , nullable=False)
+    caja_manual = db.Column(db.Boolean , nullable=False)
+    precio = db.Column(db.Integer, nullable=False)
+    kilometros = db.Column(db.Integer, nullable=False)
+    ubicacion = db.Column(db.String(255), nullable=False)
+    author_id = db.Column(db.Integer, db.ForeignKey('vendedores.id'))
