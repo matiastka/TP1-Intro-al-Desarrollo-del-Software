@@ -13,3 +13,5 @@ port = 5000
 def home():
     return "hola mundo"
 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True, port=port)
