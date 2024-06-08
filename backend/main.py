@@ -1,1 +1,0 @@
-#Acá va a estar los endpoints de la página (usando flask y flask cors)
