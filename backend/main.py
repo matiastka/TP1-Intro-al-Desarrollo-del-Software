@@ -39,6 +39,33 @@ def auto(id_auto):
     except: 
         return jsonify({"mensaje":"que haces acá, sacá la mano de ahí carajo"})
 
+@app.route("/autos/")  #Página de los autos
+def autos():
+    try:  
+        autos = Autos.query.all()
+        autos_data = []
+        for auto in autos:
+            auto_data = {
+                'id': auto.id,
+                'nombre_auto': auto.nombre_auto,
+                'marca': auto.marca,
+                'color': auto.color,
+                'cant_asientos': auto.cant_asientos,
+                'tipo_baul': auto.tipo_baul,
+                'caja_automatica': auto.caja_automatica,
+                'caja_manual': auto.caja_manual,
+                'precio': auto.precio,
+                'kilometros': auto.kilometros,
+                'ubicacion': auto.ubicacion,
+                'author_id': auto.author_id
+                }
+            autos_data.append(auto_data)
+        return jsonify(autos_data)
+    except:
+        return jsonify({
+            'mensaje': 'No hay autos'
+        })
+
 if __name__ == '__main__':
     print('Iniciando servidor...')
     db.init_app(app)
