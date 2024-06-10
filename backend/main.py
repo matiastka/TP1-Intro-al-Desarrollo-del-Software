@@ -65,6 +65,55 @@ def autos():
         return jsonify({
             'mensaje': 'No hay autos'
         })
+@app.route('/autos', methods=['POST'])
+def agregar_auto():
+    try:
+        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        nuevo_nombre = data.get('nombre_auto') #Obtiene el valor de la columna nombre_auto
+        nueva_marca = data.get('marca')
+        nuevo_color = data.get('color')
+        nueva_cant_asientos = data.get('cant_asientos')
+        nuevo_tipo_baul = data.get('tipo_baul')
+        nueva_caja_automatica = data.get('caja_automatica')
+        nueva_caja_manual = data.get('caja_manual')
+        nuevo_precio = data.get('precio')
+        nuevo_kilometros = data.get('kilometros')
+        nueva_ubicacion = data.get('ubicacion')
+        nuevo_author_id = data.get('author_id')
+        print('caja_automatica', nueva_caja_automatica)
+        nuevo_auto = Autos(
+            nombre_auto=nuevo_nombre, #El nombre de la variable tiene que ser igual al de las columnas
+            marca=nueva_marca, 
+            color=nuevo_color, 
+            cant_asientos=nueva_cant_asientos, 
+            tipo_baul=nuevo_tipo_baul, 
+            caja_automatica=nueva_caja_automatica, 
+            caja_manual=nueva_caja_manual,
+            precio=nuevo_precio,
+            kilometros=nuevo_kilometros,
+            ubicacion=nueva_ubicacion,
+            author_id=nuevo_author_id
+            )
+        db.session.add(nuevo_auto)
+        db.session.commit()
+        return jsonify({'autos': {
+            'id': nuevo_auto.id, 
+            'nombre_auto': nuevo_auto.nombre_auto, 
+            'marca': nuevo_auto.marca, 
+            'color': nuevo_auto.color,
+            'cant_asientos': nuevo_auto.cant_asientos,
+            'tipo_baul': nuevo_auto.tipo_baul,
+            'caja_automatica': nuevo_auto.caja_automatica,
+            'caja_manual': nuevo_auto.caja_manual,
+            'precio': nuevo_auto.precio,
+            'kilometros': nuevo_auto.kilometros,
+            'ubicacion': nuevo_auto.ubicacion,
+            'author_id': nuevo_auto.author_id}
+            }
+            ), 201
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'mensaje': 'Error interno del server'}), 500
 
 if __name__ == '__main__':
     print('Iniciando servidor...')
