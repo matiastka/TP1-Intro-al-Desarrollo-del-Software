@@ -33,7 +33,8 @@ def auto(id_auto):
             'precio': auto.precio, 
             'kilometros': auto.kilometros, 
             'ubicacion': auto.ubicacion, 
-            'Vendedor': auto.author_id
+            'anio': auto.anio,
+            'Vendedor': auto.vendedor_id
             }
         return jsonify(auto_data)
     except: 
@@ -57,7 +58,8 @@ def autos():
                 'precio': auto.precio,
                 'kilometros': auto.kilometros,
                 'ubicacion': auto.ubicacion,
-                'author_id': auto.author_id
+                'anio': auto.anio,
+                'vendedor_id': auto.vendedor_id
                 }
             autos_data.append(auto_data)
         return jsonify(autos_data)
@@ -79,8 +81,8 @@ def agregar_auto():
         nuevo_precio = data.get('precio')
         nuevo_kilometros = data.get('kilometros')
         nueva_ubicacion = data.get('ubicacion')
-        nuevo_author_id = data.get('author_id')
-        print('caja_automatica', nueva_caja_automatica)
+        nuevo_anio = data.get('anio')
+        nuevo_vendedor_id = data.get('vendedor_id')
         nuevo_auto = Autos(
             nombre_auto=nuevo_nombre, #El nombre de la variable tiene que ser igual al de las columnas
             marca=nueva_marca, 
@@ -92,7 +94,8 @@ def agregar_auto():
             precio=nuevo_precio,
             kilometros=nuevo_kilometros,
             ubicacion=nueva_ubicacion,
-            author_id=nuevo_author_id
+            anio=nuevo_anio,
+            vendedor_id=nuevo_vendedor_id
             )
         db.session.add(nuevo_auto)
         db.session.commit()
@@ -108,7 +111,8 @@ def agregar_auto():
             'precio': nuevo_auto.precio,
             'kilometros': nuevo_auto.kilometros,
             'ubicacion': nuevo_auto.ubicacion,
-            'author_id': nuevo_auto.author_id}
+            'anio': nuevo_auto.anio,
+            'vendedor_id': nuevo_auto.vendedor_id}
             }
             ), 201
     except Exception as error:
