@@ -120,7 +120,7 @@ def agregar_auto():
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
 
-@app.route("/autos/<id_auto>/<id_vendedor>") #pagina de un auto con cierto id
+@app.route("/autos/<id_auto>/<id_vendedor>") #pagina de un vendedor con cierto id
 def vendedor(id_auto,id_vendedor):
     try:
         vendedor = Vendedores.query.get(id_vendedor)
