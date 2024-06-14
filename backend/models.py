@@ -1,5 +1,4 @@
 #Acá tenemos la relación entre nuestra de BD y Backend
-import datetime
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -7,7 +6,7 @@ db = SQLAlchemy()
 class Vendedores(db.Model):
     __tablename__ = 'vendedores'
     id = db.Column(db.Integer, primary_key=True)
-    nombre_de_usuario = db.Column(db.String(255), nullable=False)
+    nombre_vendedor = db.Column(db.String(255), nullable=False)
     
 class Autos(db.Model):
     __tablename__ = 'autos'
@@ -22,4 +21,11 @@ class Autos(db.Model):
     precio = db.Column(db.Integer, nullable=False)
     kilometros = db.Column(db.Integer, nullable=False)
     ubicacion = db.Column(db.String(255), nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('vendedores.id'))
+    anio = db.Column(db.Integer, nullable=False)
+    vendedor_id = db.Column(db.Integer, db.ForeignKey('vendedores.id'))
+
+class Compradores(db.Model):
+    __tablename__ = 'compradores'
+    id = db.Column(db.Integer, primary_key=True)
+    nombre_comprador = db.Column(db.String(255), nullable=False)
+    plata = db.Column(db.Integer, nullable=False)
