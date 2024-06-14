@@ -9,7 +9,7 @@ class Vendedores(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre_de_usuario = db.Column(db.String(255), nullable=False)
     
-class Autos(db.Model): #se encarga Atu
+class Autos(db.Model):
     __tablename__ = 'autos'
     id = db.Column(db.Integer, primary_key=True)
     nombre_auto = db.Column(db.String(255), nullable=False)
