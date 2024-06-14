@@ -38,7 +38,7 @@ def auto(id_auto):
             }
         return jsonify(auto_data)
     except: 
-        return jsonify({"mensaje":"que haces acá, sacá la mano de ahí carajo"})
+        return jsonify({"mensaje":"El vendedor que buscaste no existe"})
 
 @app.route("/autos/")  #Página de los autos
 def autos():
@@ -67,6 +67,7 @@ def autos():
         return jsonify({
             'mensaje': 'No hay autos'
         })
+
 @app.route('/autos', methods=['POST'])
 def agregar_auto():
     try:
@@ -118,6 +119,18 @@ def agregar_auto():
     except Exception as error:
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
+
+@app.route("/autos/<id_auto>/<id_vendedor>") #pagina de un auto con cierto id
+def vendedor(id_auto,id_vendedor):
+    try:
+        vendedor = Vendedores.query.get(id_vendedor)
+        vendedor_data = {
+            'id': vendedor.id, 
+            'nombre': vendedor.nombre_vendedor, 
+            }
+        return jsonify(vendedor_data)
+    except: 
+        return jsonify({"mensaje":"El vendedor que buscaste no existe"})
 
 if __name__ == '__main__':
     print('Iniciando servidor...')
