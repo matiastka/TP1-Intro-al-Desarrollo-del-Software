@@ -17,8 +17,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 def home():
     return "hola mundo"
 
-@app.route("/autos/<id_auto>") #pagina de un auto con cierto id
-def auto(id_auto):
+@app.route("/autos/<id_auto>") #Endpoint que muestra auto por cierto id
+def mostrar_auto(id_auto):
     try:
         auto = Autos.query.get(id_auto)
         auto_data = {
@@ -40,8 +40,8 @@ def auto(id_auto):
     except: 
         return jsonify({"mensaje":"El auto que buscaste no existe"})
 
-@app.route("/autos/")  #Página de los autos
-def autos():
+@app.route("/autos/")  #Endpoint que muestra todos los autos
+def mostrar_autos():
     try:
         autos = Autos.query.all()
         autos_data = []
@@ -71,7 +71,7 @@ def autos():
         })
 
 @app.route('/autos', methods=['POST'])
-def agregar_auto():
+def agregar_auto(): #endpoint para agregar un auto
     try:
         data = request.json #Obtiene el contenido del body (por ser metodo POST)
         nuevo_nombre = data.get('nombre_auto') #Obtiene el valor de la columna nombre_auto
@@ -122,8 +122,8 @@ def agregar_auto():
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
 
-@app.route('/autos/<id_auto>', methods=['DELETE'])
-def eliminar_un_auto(id_auto):
+@app.route('/autos/<id_auto>', methods=['DELETE']) #endpoint para eliminar un auto por cierto id
+def eliminar_auto(id_auto):
     try:
         Autos.query.filter(Autos.id == int(id_auto)).delete() #Elimina
         db.session.commit() #Confirmamos en la base de datos el delete
@@ -133,7 +133,7 @@ def eliminar_un_auto(id_auto):
             'mensaje': 'No existe al auto a borrar'
         })
 
-@app.route("/autos/<id_auto>/<id_vendedor>") #pagina de un vendedor con cierto id
+@app.route("/autos/<id_auto>/<id_vendedor>") #endpoint de un vendedor con cierto id
 def vendedor(id_auto, id_vendedor):
     try:
         id_vendedor = (int(id_vendedor))
