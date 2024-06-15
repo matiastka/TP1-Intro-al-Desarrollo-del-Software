@@ -1,5 +1,5 @@
 #Acá va a estar los endpoints de la página (usando flask y flask cors)
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 
 #from flask_cors import CORS #importamos CORS para que ande el fetch entre 2 páginas
 
@@ -10,7 +10,7 @@ port = 5000
 
 #CORS(app) #Con esto van a andar los fetch entre 2 páginas distintas (o una página externa)
 
-app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://atufullana:misticaroja2011@localhost:5432/db_tp1'
+app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://matiastka:kini9853@localhost:5432/db_tp1'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 @app.route("/") #Si solicitan la homepage del servidor
@@ -38,11 +38,11 @@ def auto(id_auto):
             }
         return jsonify(auto_data)
     except: 
-        return jsonify({"mensaje":"El vendedor que buscaste no existe"})
+        return jsonify({"mensaje":"El auto que buscaste no existe"})
 
 @app.route("/autos/")  #Página de los autos
 def autos():
-    try:  
+    try:
         autos = Autos.query.all()
         autos_data = []
         for auto in autos:
@@ -62,10 +62,12 @@ def autos():
                 'vendedor_id': auto.vendedor_id
                 }
             autos_data.append(auto_data)
+        if (len(autos_data) == 0):
+            return jsonify({'mensaje': 'No hay autos'})
         return jsonify(autos_data)
     except:
         return jsonify({
-            'mensaje': 'No hay autos'
+            'mensaje': 'Error interno del server'
         })
 
 @app.route('/autos', methods=['POST'])
@@ -120,6 +122,17 @@ def agregar_auto():
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
 
+@app.route('/autos/<id_auto>', methods=['DELETE'])
+def eliminar_un_auto(id_auto):
+    try:
+        Autos.query.filter(Autos.id == int(id_auto)).delete() #Elimina
+        db.session.commit() #Confirmamos en la base de datos el delete
+        return jsonify({'Success': True})
+    except:
+        return jsonify({
+            'mensaje': 'No existe al auto a borrar'
+        })
+
 @app.route("/autos/<id_auto>/<id_vendedor>") #pagina de un vendedor con cierto id
 def vendedor(id_auto, id_vendedor):
     try:
@@ -154,20 +167,20 @@ def vendedor(id_auto, id_vendedor):
         return jsonify({"mensaje":"El vendedor que buscaste no existe"})
 
 @app.route('/compradores', methods=['POST'])
-def agregar_compradores():
+def agregar_comprador():
     try:
         data = request.json #Obtiene el contenido del body (por ser metodo POST)
-        nuevo_nombre_comprador = data.get('nombre_comprador') #Obtiene el valor de la columna nombre_comprador
-        nuevo_plata = data.get('plata')
+        nuevo_nombre = data.get('nombre_comprador') #Obtiene el valor de la columna nombre_comprador
+        nueva_plata = data.get('plata')
         nuevo_comprador = Compradores(
-            nombre_comprador=nuevo_nombre_comprador,
-            plata=nuevo_plata,
+            nombre_comprador=nuevo_nombre,
+            plata=nueva_plata,
             )
         db.session.add(nuevo_comprador)
         db.session.commit()
         return jsonify({'compradores': {
+            'id': nuevo_comprador.id, 
             'nombre_comprador': nuevo_comprador.nombre_comprador, 
-            'id': nuevo_comprador.id,
             'plata': nuevo_comprador.plata}
             }
             ), 201
@@ -175,7 +188,7 @@ def agregar_compradores():
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
 
-if __name__ == '__main__':
+if __name__ == 'main':
     print('Iniciando servidor...')
     db.init_app(app)
     with app.app_context():
