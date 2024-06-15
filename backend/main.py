@@ -121,14 +121,35 @@ def agregar_auto():
         return jsonify({'mensaje': 'Error interno del server'}), 500
 
 @app.route("/autos/<id_auto>/<id_vendedor>") #pagina de un vendedor con cierto id
-def vendedor(id_auto,id_vendedor):
+def vendedor(id_auto, id_vendedor):
     try:
-        vendedor = Vendedores.query.get(id_vendedor)
+        id_vendedor = (int(id_vendedor))
+        vendedor = Vendedores.query.where(Autos.query.get(id_auto).vendedor_id == id_vendedor).all()
         vendedor_data = {
-            'id': vendedor.id, 
-            'nombre': vendedor.nombre_vendedor, 
+            'id': vendedor[(id_vendedor-1)].id, 
+            'nombre': vendedor[(id_vendedor-1)].nombre_vendedor, 
             }
-        return jsonify(vendedor_data)
+        autos = Autos.query.all()
+        autos_datas = []
+        for auto in autos:
+            if auto.vendedor_id == id_vendedor:
+                auto_data = {
+                    'id': auto.id,
+                    'nombre_auto': auto.nombre_auto,
+                    'marca': auto.marca,
+                    'color': auto.color,
+                    'cant_asientos': auto.cant_asientos,
+                    'tipo_baul': auto.tipo_baul,
+                    'caja_automatica': auto.caja_automatica,
+                    'caja_manual': auto.caja_manual,
+                    'precio': auto.precio,
+                    'kilometros': auto.kilometros,
+                    'ubicacion': auto.ubicacion,
+                    'anio': auto.anio,
+                    'vendedor_id': auto.vendedor_id
+                    }
+                autos_datas.append(auto_data)
+        return jsonify(vendedor_data,autos_datas)
     except: 
         return jsonify({"mensaje":"El vendedor que buscaste no existe"})
 
