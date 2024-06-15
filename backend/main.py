@@ -32,6 +32,7 @@ def mostrar_auto(id_auto):
             'kilometros': auto.kilometros, 
             'ubicacion': auto.ubicacion, 
             'anio': auto.anio,
+            'link': auto.link,
             'Vendedor': auto.vendedor_id
             }
         return jsonify(auto_data)
