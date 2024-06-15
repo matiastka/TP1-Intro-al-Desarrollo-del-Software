@@ -1,1 +1,36 @@
 <!--Está es la página principal de los autos (Hompage)-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarTrader</title>
+</head>
+<body>
+    <h1>Bienvenido a CarTrader</h1>
+    <ul id="lista">
+        <!--Item = <ol></ol>-->
+        <!--Rellenar de cositas-->
+    </ul>
+    <script>
+        function request_recibida(respuesta) { // Esta función se encarga de recibir la info del request. Tiene que devolver la response.json (pq es json, si fuese texto es response.text)
+            return respuesta.json()
+        }
+        function obtener_auto(contenido) { // Esta función se encarga de devolver el cuerpo de la respuesta que quiero (el contenido). En este caso content es la lista de diccionarios porque el endpoint de /characters devuelve la lista de diccionarios de los PJs
+            //console.log("Tengo la lista de los autos!")
+            
+            const lista = document.getElementById("lista"); // Obtenemos la lista
+            for (let index = 0; index < contenido.length; index++) {
+                const item = document.createElement("li"); // Creamos un objeto de lista ordenada
+                item.append(contenido[index].nombre_auto);
+                lista.append(item);                
+            }
+        }
+        function recibir_error(error) { // Esta función se encarga de devolver un error si la request falla por algun motivo.
+            console.log("ERROR")
+            console.log(error)
+        }
+        fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_auto).catch(recibir_error)
+    </script>
+</body>
+</html>
