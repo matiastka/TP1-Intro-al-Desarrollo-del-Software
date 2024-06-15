@@ -22,6 +22,7 @@ class Autos(db.Model):
     kilometros = db.Column(db.Integer, nullable=False)
     ubicacion = db.Column(db.String(255), nullable=False)
     anio = db.Column(db.Integer, nullable=False)
+    link = db.Column(db.String(255), nullable=False)
     vendedor_id = db.Column(db.Integer, db.ForeignKey('vendedores.id'))
 
 class Compradores(db.Model):
