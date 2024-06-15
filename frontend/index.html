@@ -4,33 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CarTrader</title>
+    <title>CarTrader</title> 
+    
+    <!--Para usar Boostrap: -->    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Bienvenido a CarTrader</h1>
-    <ul id="lista">
-        <!--Item = <ol></ol>-->
-        <!--Rellenar de cositas-->
-    </ul>
-    <script>
-        function request_recibida(respuesta) { // Esta función se encarga de recibir la info del request. Tiene que devolver la response.json (pq es json, si fuese texto es response.text)
-            return respuesta.json()
-        }
-        function obtener_auto(contenido) { // Esta función se encarga de devolver el cuerpo de la respuesta que quiero (el contenido). En este caso content es la lista de diccionarios porque el endpoint de /characters devuelve la lista de diccionarios de los PJs
-            //console.log("Tengo la lista de los autos!")
-            
-            const lista = document.getElementById("lista"); // Obtenemos la lista
-            for (let index = 0; index < contenido.length; index++) {
-                const item = document.createElement("li"); // Creamos un objeto de lista ordenada
-                item.append(contenido[index].nombre_auto);
-                lista.append(item);                
+    <body data-bs-theme="dark"> <!--Hacemos la página modo oscura (por Boostrap)-->
+        <div class="container"> <!--Hacemos una container para mostrar el título (por Boostrap)-->
+            <div class="row">
+                <div class="col">
+                    <h1>Bienvenido a CarTrader</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container"> <!--Hacemos una container para mostrar los autos (por Boostrap) (tenemos que editar la función obtener_auto)-->
+            <div class="row g-4" id="autos"> <!--A las filas les damos el id = autos y le damos separación con g-4 -->
+                <!--Item = <div></div>-->
+                <!--Rellenar de cositas-->
+            </div>
+        </div>
+
+        <!--
+        <ul id="lista">
+        Item = <ol></ol>
+        Rellenar de cositas
+        </ul>-->
+
+        <!--Para usar Boostrap:-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+        crossorigin="anonymous"></script>
+
+        <script>
+            function request_recibida(respuesta) { // Esta función se encarga de recibir la info del request. Tiene que devolver la response.json (pq es json, si fuese texto es response.text)
+                return respuesta.json()
             }
-        }
-        function recibir_error(error) { // Esta función se encarga de devolver un error si la request falla por algun motivo.
-            console.log("ERROR")
-            console.log(error)
-        }
-        fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_auto).catch(recibir_error)
-    </script>
+            function obtener_auto(contenido) { // Esta función se encarga de devolver el cuerpo de la respuesta que quiero (el contenido). En este caso content es la lista de diccionarios porque el endpoint de /characters devuelve la lista de diccionarios de los PJs
+                console.log("Tengo la lista de los autos!");
+                
+                const container = document.getElementById("autos"); // Obtenemos dentro del container en la clas row g-4
+                for (let index = 0; index < contenido.length; index++) {
+                    const item = document.createElement("div"); // Creamos un objeto de tipo div (separador pero sin semantica)
+                    item.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2"); // Esto hace que se vean las columnas de los autos de cierta forma
+                    
+                    // Para poder redireccionar al usuario cuando haga click a un personaje a la info del mismo:
+                    const tarjeta = document.createElement("a"); // Creamos la constante tarjeta que es un elemento de tipo a (ancor). Es como si fuera un link.
+                    tarjeta.setAttribute("class","card text-decoration-none"); // Le damos la clase de tipo card (como atributo) y hacemos que no lo subraye por ser ancor.
+                    tarjeta.setAttribute("href", `/autos/?id=${contenido[index].id}`); // Le damos el atributo href que redirecciona a la página /character con el id correspondiente.
+                    
+                    // Para mostrar la imagen del personaje:
+                    const imagen = document.createElement("img"); // Creamos la constante imagen que es un elemento de tipo img.
+                    imagen.setAttribute("class", "card-img-top"); // Esta clase es de boostrap
+                    imagen.setAttribute("src", contenido[index].link); // Le damos el atributo src que logra obtener el link de la imagen
+
+                    // Para mostrar el texto debajo de la tarjeta (es el cuerpo de la misma)
+                    const cuerpo_tarjeta = document.createElement("div"); // Creamos la constante tarjeta_cuerpo que es un elemento de tipo div.
+                    cuerpo_tarjeta.setAttribute("class", "card-body"); // Le damos la clase de tipo card-body
+
+                    cuerpo_tarjeta.append(contenido[index].nombre_auto); // Appendiamos el nombre del personaje a card_body.
+                    tarjeta.append(imagen) // Appendiamos el elemento imagen a tarjeta.
+                    tarjeta.append(cuerpo_tarjeta) // Appendiamos el elemento cuerpot_tarjeta a tarjeta.
+                    item.append(tarjeta) // Appendiamos el elemento de terjeta a item                
+                    container.append(item); // Appendiamos el item dentro del container        
+                }   
+            }
+            function recibir_error(error) { // Esta función se encarga de devolver un error si la request falla por algun motivo.
+                console.log("ERROR")
+                console.log(error)
+            }
+            fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_auto).catch(recibir_error)
+        </script>
 </body>
 </html>
