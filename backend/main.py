@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 
 #from flask_cors import CORS #importamos CORS para que ande el fetch entre 2 páginas
 
-from models import db, Vendedores, Autos
+from models import db, Vendedores, Autos, Compradores
 
 app = Flask(__name__) #denominamos a flask
 port = 5000
@@ -152,6 +152,28 @@ def vendedor(id_auto, id_vendedor):
         return jsonify(vendedor_data,autos_datas)
     except: 
         return jsonify({"mensaje":"El vendedor que buscaste no existe"})
+
+@app.route('/compradores', methods=['POST'])
+def agregar_compradores():
+    try:
+        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        nuevo_nombre_comprador = data.get('nombre_comprador') #Obtiene el valor de la columna nombre_comprador
+        nuevo_plata = data.get('plata')
+        nuevo_comprador = Compradores(
+            nombre_comprador=nuevo_nombre_comprador,
+            plata=nuevo_plata,
+            )
+        db.session.add(nuevo_comprador)
+        db.session.commit()
+        return jsonify({'compradores': {
+            'nombre_comprador': nuevo_comprador.nombre_comprador, 
+            'id': nuevo_comprador.id,
+            'plata': nuevo_comprador.plata}
+            }
+            ), 201
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'mensaje': 'Error interno del server'}), 500
 
 if __name__ == '__main__':
     print('Iniciando servidor...')
