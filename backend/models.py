@@ -28,4 +28,4 @@ class Compradores(db.Model):
     __tablename__ = 'compradores'
     id = db.Column(db.Integer, primary_key=True)
     nombre_comprador = db.Column(db.String(255), nullable=False)
-    plata = db.Column(db.Integer, nullable=False)
+    plata = db.Column(db.Integer, default=0)
