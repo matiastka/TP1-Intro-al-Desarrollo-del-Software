@@ -1,14 +1,12 @@
 #Acá va a estar los endpoints de la página (usando flask y flask cors)
-from flask import Flask, jsonify, request, session
-
-#from flask_cors import CORS #importamos CORS para que ande el fetch entre 2 páginas
+from flask import Flask, jsonify, request
+from flask_cors import CORS #importamos CORS para que ande el fetch entre 2 páginas
 
 from models import db, Vendedores, Autos, Compradores
 
 app = Flask(__name__) #denominamos a flask
+CORS(app) #Con esto van a andar los fetch entre 2 páginas distintas (o una página externa)
 port = 5000
-
-#CORS(app) #Con esto van a andar los fetch entre 2 páginas distintas (o una página externa)
 
 app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://matiastka:kini9853@localhost:5432/db_tp1'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
@@ -34,6 +32,7 @@ def mostrar_auto(id_auto):
             'kilometros': auto.kilometros, 
             'ubicacion': auto.ubicacion, 
             'anio': auto.anio,
+            'link': auto.link,
             'Vendedor': auto.vendedor_id
             }
         return jsonify(auto_data)
@@ -59,6 +58,7 @@ def mostrar_autos():
                 'kilometros': auto.kilometros,
                 'ubicacion': auto.ubicacion,
                 'anio': auto.anio,
+                'link': auto.link,
                 'vendedor_id': auto.vendedor_id
                 }
             autos_data.append(auto_data)
@@ -85,6 +85,7 @@ def agregar_auto(): #endpoint para agregar un auto
         nuevo_kilometros = data.get('kilometros')
         nueva_ubicacion = data.get('ubicacion')
         nuevo_anio = data.get('anio')
+        nuevo_link = data.get('link')
         nuevo_vendedor_id = data.get('vendedor_id')
         nuevo_auto = Autos(
             nombre_auto=nuevo_nombre, #El nombre de la variable tiene que ser igual al de las columnas
@@ -98,6 +99,7 @@ def agregar_auto(): #endpoint para agregar un auto
             kilometros=nuevo_kilometros,
             ubicacion=nueva_ubicacion,
             anio=nuevo_anio,
+            link=nuevo_link,
             vendedor_id=nuevo_vendedor_id
             )
         db.session.add(nuevo_auto)
@@ -115,6 +117,7 @@ def agregar_auto(): #endpoint para agregar un auto
             'kilometros': nuevo_auto.kilometros,
             'ubicacion': nuevo_auto.ubicacion,
             'anio': nuevo_auto.anio,
+            'link': nuevo_link,
             'vendedor_id': nuevo_auto.vendedor_id}
             }
             ), 201
@@ -159,6 +162,7 @@ def vendedor(id_auto, id_vendedor):
                     'kilometros': auto.kilometros,
                     'ubicacion': auto.ubicacion,
                     'anio': auto.anio,
+                    'link': auto.link,
                     'vendedor_id': auto.vendedor_id
                     }
                 autos_datas.append(auto_data)
