@@ -24,16 +24,16 @@ def mostrar_auto(id_auto):
             'nombre': auto.nombre_auto, 
             'marca': auto.marca, 
             'color': auto.color, 
-            'cantidad de asientos': auto.cant_asientos, 
-            'tipo de baul': auto.tipo_baul, 
-            '¿caja automatica?': auto.caja_automatica, 
-            '¿caja manual?': auto.caja_manual, 
+            'cant_asientos': auto.cant_asientos, 
+            'tipo_baul': auto.tipo_baul, 
+            'caja_automatica': auto.caja_automatica, 
+            'caja_manual': auto.caja_manual, 
             'precio': auto.precio, 
             'kilometros': auto.kilometros, 
             'ubicacion': auto.ubicacion, 
             'anio': auto.anio,
             'link': auto.link,
-            'Vendedor': auto.vendedor_id
+            'vendedor_id': auto.vendedor_id
             }
         return jsonify(auto_data)
     except: 

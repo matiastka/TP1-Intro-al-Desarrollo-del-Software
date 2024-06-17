@@ -24,9 +24,21 @@
                                 </div>
                                 <div class="col-6">
                                     <h2 id="titulo_auto"> Cargando... </h2> <!--Le damos el id name a h2-->
+                                    <h5 id="año"> Cargando... </h5>
+                                    <h5 id="tipo_caja_manual"> Cargando... </h5>
+                                    <h5 id="tipo_caja_automatica"> Cargando...</h5>
+                                    <h5 id="cantidad_asientos"> Cargando... </h5>
+                                    <h5 id="tipo_color"> Cargando... </h5>
+                                    <h5 id="km"> Cargando... </h5>
+                                    <h5 id="tipo_marca"> Cargando... </h5>
+                                    <h5 id="el_precio"> Cargando... </h5>
+                                    <h5 id="espacio_baul"> Cargando... </h5>
+                                    <h5 id="la_ubicacion"> Cargando... </h5>
+                                    <h5 id="id_vendedor"> Cargando... </h5>
+                                    
                                 </div>
                             </div>
-                            <!--van los botones borrar y editar respectivamente-->
+                            <!--van los botones borrar y edtiar respectivamente-->
                             </div>
                         </div>
                     </div>
@@ -62,6 +74,45 @@
 
             const imagen = document.getElementById("imagen"); // Creamos la constante imagen que se para dentro de la etiqueta img por tener el id imagen.
             imagen.setAttribute("src", contenido.link); // Le asignamos el atributo src con el valor que tenga el json con clave link.
+
+            const aniio = document.getElementById("año");
+            aniio.innerText = `Año: ${contenido.anio}`
+            
+            const caja_man = document.getElementById("tipo_caja_manual"); // Creamos la cte caja_man que se para dentro del h5 con id = tipo_caja_manual
+            const caja_auto = document.getElementById("tipo_caja_automatica"); // idem pero con otro nombre
+            console.log(contenido.caja_manual)
+            if (contenido.caja_manual === true) {  // Si el json en caja_manual === true
+                caja_man.innerText = "Caja manual" // Sobrescribe el h5 con id = "Caja manual" que decia Cargando... por Caja Manual 
+                caja_auto.innerText = null // Sobrescribe el h5 Caja automatica que decia Cargando... por Nada 
+            }
+            else {  
+                caja_man.innerText = null // Sobrescribe el h5 Caja manual que decia Cargando... por Nada
+                caja_auto.innerText = "Caja automatica" // Sobrescribe el h5 con id = "Caja automatica" que decia Cargando... por Caja automatica 
+            }
+
+            const numero_asientos = document.getElementById("cantidad_asientos"); // Creamos la cte numero_asientos que  se para dentro del h5 con id = cantidad-asientos
+            numero_asientos.innerText = `Cantidad de asientos: ${contenido.cant_asientos}`// Dentro de la cte numero_asientos imprime el contendio del json en cant_asiento
+
+            const color = document.getElementById("tipo_color"); // idem pero con otro nombre
+            color.innerText = `Color: ${contenido.color}` // idem pero con otro nombre
+
+            const kilometro = document.getElementById("km");
+            kilometro.innerText = `Kilometros: ${contenido.kilometros}`
+
+            const nombre_marca = document.getElementById("tipo_marca");
+            nombre_marca.innerText = `Marca: ${contenido.marca}`
+
+            const coste_monetario = document.getElementById("el_precio");
+            coste_monetario.innerText = `Precio: ${contenido.precio}`
+
+            const tipo_de_baul = document.getElementById("espacio_baul");
+            tipo_de_baul.innerText = `Tipo de baúl: ${contenido.tipo_baul}`
+
+            const ubicacion = document.getElementById("la_ubicacion");
+            ubicacion.innerText = `Ubicación: ${contenido.ubicacion}`
+            
+            const id_del_vendedor = document.getElementById("id_vendedor"); // Creamos la cte id_del_vendedor que se para dentro del h5 con id = id_vendedor
+            id_del_vendedor.innerHTML = `ID del vendedor: <a href="https://promiedos.com.ar">${contenido.vendedor_id}` // A la cte redireccionamos a la página del vendedor con query params.
         }
         function manejar_error(error) {
             console.log("ERROR", error)
