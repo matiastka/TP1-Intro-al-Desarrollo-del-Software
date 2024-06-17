@@ -41,7 +41,7 @@
             function request_recibida(respuesta) { // Esta función se encarga de recibir la info del request. Tiene que devolver la response.json (pq es json, si fuese texto es response.text)
                 return respuesta.json()
             }
-            function obtener_auto(contenido) { // Esta función se encarga de devolver el cuerpo de la respuesta que quiero (el contenido). En este caso content es la lista de diccionarios porque el endpoint de /characters devuelve la lista de diccionarios de los PJs
+            function obtener_autos(contenido) { // Esta función se encarga de devolver el cuerpo de la respuesta que quiero (el contenido). En este caso content es la lista de diccionarios porque el endpoint de /characters devuelve la lista de diccionarios de los PJs
                 console.log("Tengo la lista de los autos!");
                 
                 const container = document.getElementById("autos"); // Obtenemos dentro del container en la clas row g-4
@@ -52,7 +52,7 @@
                     // Para poder redireccionar al usuario cuando haga click a un personaje a la info del mismo:
                     const tarjeta = document.createElement("a"); // Creamos la constante tarjeta que es un elemento de tipo a (ancor). Es como si fuera un link.
                     tarjeta.setAttribute("class","card text-decoration-none"); // Le damos la clase de tipo card (como atributo) y hacemos que no lo subraye por ser ancor.
-                    tarjeta.setAttribute("href", `/autos/?id=${contenido[index].id}`); // Le damos el atributo href que redirecciona a la página /character con el id correspondiente.
+                    tarjeta.setAttribute("href", `/auto?id=${contenido[index].id}`); // Le damos el atributo href que redirecciona a la página /character con el id correspondiente.
                     
                     // Para mostrar la imagen del personaje:
                     const imagen = document.createElement("img"); // Creamos la constante imagen que es un elemento de tipo img.
@@ -74,7 +74,7 @@
                 console.log("ERROR")
                 console.log(error)
             }
-            fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_auto).catch(recibir_error)
+            fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_autos).catch(recibir_error)
         </script>
 </body>
 </html>
