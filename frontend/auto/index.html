@@ -38,7 +38,9 @@
                                     
                                 </div>
                             </div>
-                            <!--van los botones borrar y edtiar respectivamente-->
+                            <div class="card-footer">
+                                <button class="btn btn-danger" onclick="eliminar_auto()">Eliminar</button> <!--Creamos el boton de borrar-->
+                                <!-- Falta el boton editar -->
                             </div>
                         </div>
                     </div>
@@ -119,6 +121,28 @@
         }
         // Vinculamos esta la pagina del auto con el endpoint de mostrar un auto
         fetch(`http://localhost:5000/autos/${id}`).then(response_recibida).then(obtener_auto).catch(manejar_error)
+
+        // Para poder hacer andar el botón remove la vinculamos a la función remove_character y tenemos que hacer un endpoint para borrar (el fetch):
+        function eliminar_auto() {
+            const confirmacion = confirm(`¿Esta seguro de que queres eliminar la publicación de id ${id}?`) // Creamos la constante confirmation que es un confirm de si se quiere borrar el personaje. Si es Aceptar, es true y si es cancelar, es false
+            console.log(confirmacion)
+            if (!confirmacion) { // Si la confirmación es false entonces termina la función 
+            return;
+        }
+        // Función para el segundo then
+        function borrar_response(contenido) { // En este caso content es el diccionario {success: remove_character(id)}. Porque el endpoint de /characters/<id> con metodo DELETE devuelve un diccionario
+            if (contenido.Success === true) { // Si el contenido (el diccionario {succes: booleano} tiene de valor true 
+                console.log(contenido)
+                alert("La publicación se ha eliminado con exito") // Avisa que fue borrado exitosamente
+                window.location.href = "/"; // Redirecciona a la homepage
+            }
+            else {
+                alert("Un error a ocurrido. Intentelo de nuevo") // Si algo salió mal avisa que algo salió mal
+            }
+        }
+        fetch(
+            `http://127.0.0.1:5000/autos/${id}`, { method: "DELETE" }).then(response_recibida).then(borrar_response).catch(manejar_error)
+        }
     </script>
 </body>
 </html>
