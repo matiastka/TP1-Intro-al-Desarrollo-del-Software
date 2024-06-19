@@ -1,0 +1,70 @@
+<!--Esta es página para crear un vendedor-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarTrader</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+
+</head>
+<body data-bs-theme="dark">
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-12 col-md-10 col-lg-6 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Registrarse como vendedor</h2> 
+                        <form onsubmit="crear_vendedor(event)"> <!--La función crear_vendedor(event) esta vinculada con el script-->
+                            <div class="mb-3"> <!--Campo del nombre del vendedor-->
+                                <label for="name" class="form-label">Ingrese su nombre</label>
+                                <input type="text" class="form-control" id="nombre_vendedor" name="nombre_vendedor" placeholder="Juan Quique" required>
+                            </div>
+
+                            <button id="boton_crear" type="submit" class="btn btn-success">Crear</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        function response_recibida(respuesta) { 
+            return respuesta.json()
+        }
+
+        function manejar_error(error) {
+            console.log("ERROR", error)
+        }
+ 
+        // Para hacer funcionar el botón Crear del fomrulario, vinculamos el mismo a la función crear_vendedor(event).
+        function crear_vendedor(event) { // la función recibe el parametro evento que es el evento al enviar el formulario (por el boton de tipo submit)
+            event.preventDefault() //Evita que el formulario se envie y se redireccione
+            
+            const formData = new FormData(event.target) // Creamos la constante formData que obtiene los campos con sus valores del form
+
+            const nombre_vendedor = formData.get("nombre_vendedor") // Creamos la constante nombre_vendedor que obtiene el valor del campo nombre_vendedor del form
+
+            function crear_response(contenido) {
+                if (contenido.Success === true) {
+                    console.log(contenido)
+                    const id = contenido.id // Creamos la constante id que obtiene todos los paramaeteros de la constante params que sea id
+                    console.log(id)
+                    //document.getElementById("boton_crear").setAttribute("href", `/vendedor/?id=${id}`)
+                    alert("Su usuario se registró correctamente")
+                    window.location.href = `/vendedor?id=${id}`
+                }
+                else {
+                    alert("ERROR")
+                }
+            }          
+            // Vinculamos esta página con el endpoint de método PUT (hay que crear un endpoint con método PUT en la app.py)
+            fetch((`http://localhost:5000/vendedores`), {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({nombre_vendedor: nombre_vendedor})
+            }).then(response_recibida).then(crear_response).catch(manejar_error)
+        }
+    </script>
+</body>
+</html>
