@@ -193,7 +193,26 @@ def vendedor(id_auto, id_vendedor):
         return jsonify(vendedor_data,autos_datas)
     except: 
         return jsonify({"mensaje":"El vendedor que buscaste no existe"})
-
+    
+@app.route('/vendedores', methods=['POST'])
+def agregar_vendedor():
+    try:
+        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        nuevo_nombre = data.get('nombre_vendedor') #Obtiene el valor de la columna nombre_comprador
+        nuevo_vendedor = Vendedores(
+            nombre_vendedor=nuevo_nombre
+            )
+        db.session.add(nuevo_vendedor)
+        db.session.commit()
+        return jsonify({'vendedores': {
+            'id': nuevo_vendedor.id, 
+            'nombre_vendedor': nuevo_vendedor.nombre_vendedor}  
+            }
+            ), 201
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'mensaje': 'Error interno del server'}), 500
+    
 @app.route('/compradores', methods=['POST'])
 def agregar_comprador():
     try:
