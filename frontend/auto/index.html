@@ -38,10 +38,6 @@
                                     
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button class="btn btn-danger" onclick="eliminar_auto()">Eliminar</button> <!--Creamos el boton de borrar-->
-                                <!-- Falta el boton editar -->
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,8 +67,8 @@
         function obtener_auto(contenido) { // Función que brinda la respuesta que queremos del endpoint
             console.log(contenido)
 
-            const nombre = document.getElementById("titulo_auto"); // Creamos la constante nombre que se para dentro de <h2> por tener el id titulo_auto.
-            nombre.innerText = contenido.nombre; // La constante nombre, sobreescribe el contenido del json con clave nombre.
+            const nombre_auto = document.getElementById("titulo_auto"); // Creamos la constante nombre que se para dentro de <h2> por tener el id titulo_auto.
+            nombre_auto.innerText = contenido.nombre_auto; // La constante nombre, sobreescribe el contenido del json con clave nombre.
 
             const imagen = document.getElementById("imagen"); // Creamos la constante imagen que se para dentro de la etiqueta img por tener el id imagen.
             imagen.setAttribute("src", contenido.link); // Le asignamos el atributo src con el valor que tenga el json con clave link.
@@ -140,8 +136,7 @@
                 alert("Un error a ocurrido. Intentelo de nuevo") // Si algo salió mal avisa que algo salió mal
             }
         }
-        fetch(
-            `http://127.0.0.1:5000/autos/${id}`, { method: "DELETE" }).then(response_recibida).then(borrar_response).catch(manejar_error)
+        fetch(`http://127.0.0.1:5000/autos/${id}`, { method: "DELETE" }).then(response_recibida).then(borrar_response).catch(manejar_error)
         }
     </script>
 </body>
