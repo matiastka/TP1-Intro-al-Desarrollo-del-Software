@@ -70,7 +70,7 @@ def mostrar_autos():
             'mensaje': 'Error interno del server'
         })
 
-@app.route('/autos', methods=['POST'])
+@app.route('/autos/', methods=['POST'])
 def agregar_auto(): #endpoint para agregar un auto
     try:
         data = request.json #Obtiene el contenido del body (por ser metodo POST)
@@ -118,7 +118,7 @@ def agregar_auto(): #endpoint para agregar un auto
             'ubicacion': nuevo_auto.ubicacion,
             'anio': nuevo_auto.anio,
             'link': nuevo_link,
-            'vendedor_id': nuevo_auto.vendedor_id}
+            'vendedor_id': nuevo_auto.vendedor_id}, 'Success': True
             }
             ), 201
     except Exception as error:
@@ -194,11 +194,13 @@ def vendedor(id_auto, id_vendedor):
     except: 
         return jsonify({"mensaje":"El vendedor que buscaste no existe"})
     
-@app.route('/vendedores', methods=['POST'])
+@app.route('/vendedores', methods=['POST']) #Endpoint para crear un vendedor
 def agregar_vendedor():
     try:
         data = request.json #Obtiene el contenido del body (por ser metodo POST)
         nuevo_nombre = data.get('nombre_vendedor') #Obtiene el valor de la columna nombre_comprador
+        lista_vendedores = Vendedores.query.all()
+        id = len(lista_vendedores) + 1 #Obtenemos el id, contando el largo de la lista (que la lista son los vendedores) le sumamos uno.
         nuevo_vendedor = Vendedores(
             nombre_vendedor=nuevo_nombre
             )
@@ -206,7 +208,7 @@ def agregar_vendedor():
         db.session.commit()
         return jsonify({'vendedores': {
             'id': nuevo_vendedor.id, 
-            'nombre_vendedor': nuevo_vendedor.nombre_vendedor}  
+            'nombre_vendedor': nuevo_vendedor.nombre_vendedor}, 'id': id, 'Success': True
             }
             ), 201
     except Exception as error:
