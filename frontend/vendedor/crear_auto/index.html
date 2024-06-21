@@ -96,6 +96,10 @@
         const id = parametros.get("id"); 
         //console.log(id)
 
+        if (id == 'null' || id === '' || id == null) {
+            window.location.href = "/";
+        }
+
         function response_recibida(respuesta) { 
             return respuesta.json()
         }
@@ -112,8 +116,18 @@
 
             const nombre_auto = formData.get("nombre_auto")  // Creamos la constante nombre_auto que obtiene la data del formulario con id nombre_auto
             const anio = formData.get("anio") 
-            const caja_automatica = formData.get("caja_automatica") // Idem con cada campo del formulario
-            const caja_manual = formData.get("caja_manual") 
+            const caja = formData.get("caja") // Obtenemos el valor del grupo de radio buttons con nombre "caja"
+            let caja_automatica, caja_manual;
+            if (caja === "caja_automatica") {
+                caja_automatica = true;
+                caja_manual = false;
+            } else if (caja === "caja_manual") {
+                caja_automatica = false;
+                caja_manual = true;
+            } else {
+                caja_automatica = false;
+                caja_manual = false;
+            }
             const cant_asientos = formData.get("cant_asientos")
             const color = formData.get("color") 
             const kilometros = formData.get("kilometros") 
