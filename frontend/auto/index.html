@@ -57,7 +57,7 @@
         const id = parametros.get("id"); // Creamos la constante id que obtiene todos los paramaeteros de la constante params que sea id
         console.log(id)
         
-        if (id === null || id === '') { // Si el id no existe (osea es null) entonces redirecciona a la homepage ó si id= es un string vacio
+        if (id == 'null' || id === '' || id == null) { // Si el id no existe (osea es null) entonces redirecciona a la homepage ó si id= es un string vacio
             window.location.href = "/";
         }
         
