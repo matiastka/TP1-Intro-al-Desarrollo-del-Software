@@ -15,8 +15,9 @@
         <div class="container"> 
             <div class="row">
                 <div class="col mb-3">
-                    <h1>Bienvenido a CarTrader</h1>
+                    <h1 id="titulo_usuario">Cargando su usuario</h1>
                     <a id="boton_crear_auto" class="btn btn-success" href="crear_auto">Registrar Auto</a> <!--Creamos el boton para crear un auto y le damos el id boton_crear_auto -->
+                    <a id="boton_editar_vendedor" class="btn btn-warning" href="editar_vendedor">Modificar perfil</a> 
                 </div>
             </div>
         </div>
@@ -31,22 +32,23 @@
         crossorigin="anonymous"></script>
 
         <script>
-        // Para poder mostrar la info de cada auto dependiendo de su id necesito extraer el id por el link:
-        const parametros = new URLSearchParams(window.location.search);
-        const id = parametros.get("id");
-        console.log(id)
-        
-        if (id == 'null' || id === '' || id == null) {
-            window.location.href = "/";
-        }
-        // Al ancor Registrar_auto le brindamos el id del vendedor en el link.
-        document.getElementById("boton_crear_auto").setAttribute("href", `/vendedor/crear_auto?id=${id}`) // Se para dentro de <a> con id boton_crear_auto y le brindamos el id del vendedor en el link (atributo)
+            // Para poder mostrar la info de cada auto dependiendo de su id necesito extraer el id por el link:
+            const parametros = new URLSearchParams(window.location.search);
+            const id = parametros.get("id");
+            console.log(id)
+            
+            if (id == 'null' || id === '' || id == null) {
+                window.location.href = "/";
+            }
+            // Al ancor Registrar_auto le brindamos el id del vendedor en el link.
+            document.getElementById("boton_crear_auto").setAttribute("href", `/vendedor/crear_auto?id=${id}`) // Se para dentro de <a> con id boton_crear_auto y le brindamos el id del vendedor en el link (atributo)
+            document.getElementById("boton_editar_vendedor").setAttribute("href", `/vendedor/editar_vendedor?id=${id}`) // Se para dentro de <a> con id boton_editar_vendedor y le brindamos el id del vendedor en el link
             function request_recibida(respuesta) {
                 return respuesta.json()
             }
             function obtener_autos(contenido) {
                 console.log("Tengo la lista de los autos!");
-                
+
                 const container = document.getElementById("autos");
                 for (let index = 0; index < contenido.length; index++) {
                     const item = document.createElement("div");
@@ -75,6 +77,14 @@
                 console.log(error)
             }
             fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_autos).catch(recibir_error)
+
+            function obtener_vendedores(contenido) {
+                console.log("Tengo la lista del vendedor")
+                
+                const nombre_del_vendedor = document.getElementById("titulo_usuario"); 
+                nombre_del_vendedor.innerText = `¡Bienvenido ${contenido.nombre_vendedor}!`;    
+            }
+            fetch(`http://localhost:5000/vendedores/${id}`).then(request_recibida).then(obtener_vendedores).catch(recibir_error)
         </script>
 </body>
 </html>
