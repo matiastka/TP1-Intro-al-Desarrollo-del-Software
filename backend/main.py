@@ -193,7 +193,36 @@ def vendedor(id_auto, id_vendedor):
         return jsonify(vendedor_data,autos_datas)
     except: 
         return jsonify({"mensaje":"El vendedor que buscaste no existe"})
-    
+
+@app.route('/vendedores/<id_vendedor>') #Endpoint para mostrar un vendedor
+def mostrar_vendedor(id_vendedor):
+    try:
+        vendedor = Vendedores.query.get(id_vendedor)
+        vendedor_data = {
+            'id': vendedor.id, 
+            'nombre_vendedor': vendedor.nombre_vendedor, 
+            }
+        return jsonify(vendedor_data)
+    except: 
+        return jsonify({"mensaje":"El vendedor que buscaste no existe"})
+
+@app.route('/vendedores') #Endpoint para mostrar todos los vendedores
+def mostrar_vendedores():
+    try:
+        vendedores = Vendedores.query.all()
+        vendedores_data = []
+        for vendedor in vendedores:
+            vendedor_data = {
+                'id': vendedor.id,
+                'nombre_vendedor': vendedor.nombre_vendedor
+            }
+            vendedores_data.append(vendedor_data) #Sino va a dentro del for solo apeendea el último.
+        if (len(vendedor_data) == 0):
+            return jsonify({"mensaje": 'No hay vendedores'})
+        return jsonify(vendedores_data)
+    except:
+        return jsonify({'mensaje': 'Error interno del server'}), 500
+
 @app.route('/vendedores', methods=['POST']) #Endpoint para crear un vendedor
 def agregar_vendedor():
     try:
@@ -214,7 +243,21 @@ def agregar_vendedor():
     except Exception as error:
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
-    
+
+@app.route('/vendedores/<id_vendedor>', methods=['PUT']) #Endpoint para editar un vendedor
+def editar_vendedor(id_vendedor):
+    try:
+        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        vendedor_a_editar = Vendedores.query.get(id_vendedor)
+
+        vendedor_a_editar.nombre_vendedor = data.get('nombre_vendedor')
+        db.session.commit()
+
+        return jsonify({'Success': True}), 200
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'mensaje': 'Error al editar el vendedor'}), 500
+
 @app.route('/compradores', methods=['POST'])
 def agregar_comprador():
     try:
