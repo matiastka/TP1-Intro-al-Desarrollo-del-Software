@@ -1,4 +1,4 @@
-<!--Está es la página principal de los autos (Homepage) con un comprador loggeado-->
+<!--Está es la página principal de los autos (Homepage) de un vendedor. Con un comprador loggeado-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -16,8 +16,7 @@
             <div class="row">
                 <div class="col mb-3">
                     <h1 id="titulo_usuario">Cargando su usuario</h1>
-                    <a id="boton_añadir_fondos" class="btn btn-success" href="agregar_fondos">Ingresar Fondos </a> <!--Creamos el boton Ingresar fondos para agregar fondos al perfil, con id boton_añadir_fondos -->
-                    <a id="boton_editar_comprador" class="btn btn-warning" href="editar_comprador">Modificar perfil</a> <!--Creamos el boton Editar para editar el perfil, con id boton_editar_comprador -->
+                    <a id="boton_homepage_comprador" class="btn btn-success" href="/">Volver a la página principal</a> <!--Creamos el boton para volver a la homepage de los autos con el comprador logeado y le damos el id boton_homepage -->
                 </div>
             </div>
         </div>
@@ -34,21 +33,31 @@
         <script>
             const parametros = new URLSearchParams(window.location.search);
             const id_comprador = parametros.get("id_comprador");
+            const id_pagina_vendedor = parametros.get("id_pagina_vendedor")
             console.log(id_comprador)
+            console.log(id_pagina_vendedor)
             
             if (id_comprador == 'null' || id_comprador === '' || id_comprador == null) {
                 window.location.href = "/";
             }
-            document.getElementById("boton_añadir_fondos").setAttribute("href", `/comprador/agregar_fondos?id_comprador=${id_comprador}`) // Se para dentro de <a> con id boton_añadir_fondos y redireccionamos con el id_comprador.
-            document.getElementById("boton_editar_comprador").setAttribute("href", `/comprador/editar_comprador?id_comprador=${id_comprador}`) // Se para dentro de <a> con id boton_editar_comprador y redireccionamos con el id_comprador.
+
+            if (id_pagina_vendedor == 'null' || id_pagina_vendedor === '' || id_pagina_vendedor == null) {
+                window.location.href = `/comprador?id_comprador=${id_comprador}`;
+            }
+            
+            document.getElementById("boton_homepage_comprador").setAttribute("href", `/comprador?id_comprador=${id_comprador}`) // Se para dentro de <a> con id boton_homepage y le brindamos el id del comprador en el link 
+            
             function request_recibida(respuesta) {
                 return respuesta.json()
             }
             function obtener_autos(contenido) {
                 console.log("Tengo la lista de los autos!");
-
+                console.log(contenido)
+                
                 const container = document.getElementById("autos");
                 for (let index = 0; index < contenido.length; index++) {
+                    console.log(contenido[index])
+                    if (id_pagina_vendedor == contenido[index].vendedor_id) { // Si el id del vendedor es el mismo del vendedor_id muestra los autos correspondientes                   
                     const item = document.createElement("div");
                     item.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2"); 
                     
@@ -68,6 +77,7 @@
                     tarjeta.append(cuerpo_tarjeta) 
                     item.append(tarjeta) 
                     container.append(item);
+                    }
                 }   
             }
             function recibir_error(error) {
@@ -76,13 +86,13 @@
             }
             fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_autos).catch(recibir_error)
 
-            function obtener_compradores(contenido) {
-                console.log("Tengo la lista del comprador")
+            function obtener_vendedores(contenido) {
+                console.log("Tengo la lista del vendedor")
                 
-                const nombre_del_comprador = document.getElementById("titulo_usuario"); 
-                nombre_del_comprador.innerText = `¡Bienvenido/a ${contenido.nombre_comprador}!`;    
+                const nombre_del_vendedor = document.getElementById("titulo_usuario"); 
+                nombre_del_vendedor.innerText = `¡Autos de ${contenido.nombre_vendedor}!`;    
             }
-            fetch(`http://localhost:5000/compradores/${id_comprador}`).then(request_recibida).then(obtener_compradores).catch(recibir_error)
+            fetch(`http://localhost:5000/vendedores/${id_pagina_vendedor}`).then(request_recibida).then(obtener_vendedores).catch(recibir_error)
         </script>
 </body>
 </html>

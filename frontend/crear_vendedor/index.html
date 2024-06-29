@@ -19,7 +19,7 @@
                         <h2 class="card-title">Registrarse como vendedor</h2> 
                         <form onsubmit="crear_vendedor(event)"> <!--La función crear_vendedor(event) esta vinculada con el script-->
                             <div class="mb-3"> <!--Campo del nombre del vendedor-->
-                                <label for="name" class="form-label">Ingrese su nombre</label>
+                                <label for="nombre_vendedor" class="form-label">Ingrese su nombre</label>
                                 <input type="text" class="form-control" id="nombre_vendedor" name="nombre_vendedor" placeholder="Juan Quique" required>
                             </div>
 
@@ -51,9 +51,9 @@
             function crear_response(contenido) {
                 if (contenido.Success === true) {
                     console.log(contenido)
-                    const id = contenido.id // Creamos la constante id que obtiene todos los paramaeteros de la constante params que sea id
+                    // const id = contenido.id Forma vieja de conseguir el id (en simultaneo con el endpoint)
+                    const id = contenido.vendedores.id // Creamos la constante id que obtiene todos los paramaeteros de la constante params que sea id
                     console.log(id)
-                    //document.getElementById("boton_crear").setAttribute("href", `/vendedor/?id=${id}`)
                     alert("Su usuario se registró correctamente")
                     window.location.href = `/vendedor?id=${id}`
                 }

@@ -8,7 +8,7 @@ app = Flask(__name__) #denominamos a flask
 CORS(app) #Con esto van a andar los fetch entre 2 páginas distintas (o una página externa)
 port = 5000
 
-app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://atufullana:misticaroja2011@localhost:5432/db_tp1'
+app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://matiastka:kini9853@localhost:5432/db_tp1'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 @app.route("/") #Si solicitan la homepage del servidor
@@ -160,40 +160,6 @@ def editar_auto(id_auto):
         print('Error', error)
         return jsonify({'mensaje': 'Error al editar el auto'}), 500
 
-@app.route("/autos/<id_auto>/<id_vendedor>") #endpoint de un vendedor con cierto id
-def vendedor(id_auto, id_vendedor):
-    try:
-        id_vendedor = (int(id_vendedor))
-        vendedor = Vendedores.query.where(Autos.query.get(id_auto).vendedor_id == id_vendedor).all()
-        vendedor_data = {
-            'id': vendedor[(id_vendedor-1)].id, 
-            'nombre': vendedor[(id_vendedor-1)].nombre_vendedor, 
-            }
-        autos = Autos.query.all()
-        autos_datas = []
-        for auto in autos:
-            if auto.vendedor_id == id_vendedor:
-                auto_data = {
-                    'id': auto.id,
-                    'nombre_auto': auto.nombre_auto,
-                    'marca': auto.marca,
-                    'color': auto.color,
-                    'cant_asientos': auto.cant_asientos,
-                    'tipo_baul': auto.tipo_baul,
-                    'caja_automatica': auto.caja_automatica,
-                    'caja_manual': auto.caja_manual,
-                    'precio': auto.precio,
-                    'kilometros': auto.kilometros,
-                    'ubicacion': auto.ubicacion,
-                    'anio': auto.anio,
-                    'link': auto.link,
-                    'vendedor_id': auto.vendedor_id
-                    }
-                autos_datas.append(auto_data)
-        return jsonify(vendedor_data,autos_datas)
-    except: 
-        return jsonify({"mensaje":"El vendedor que buscaste no existe"})
-
 @app.route('/vendedores/<id_vendedor>') #Endpoint para mostrar un vendedor
 def mostrar_vendedor(id_vendedor):
     try:
@@ -228,8 +194,8 @@ def agregar_vendedor():
     try:
         data = request.json #Obtiene el contenido del body (por ser metodo POST)
         nuevo_nombre = data.get('nombre_vendedor') #Obtiene el valor de la columna nombre_comprador
-        lista_vendedores = Vendedores.query.all()
-        id = len(lista_vendedores) + 1 #Obtenemos el id, contando el largo de la lista (que la lista son los vendedores) le sumamos uno.
+        #lista_vendedores = Vendedores.query.all()  Forma vieja de conseguir el id del vendedor (en simultaneo con el frontend)
+        #id = len(lista_vendedores) + 1 #Obtenemos el id, contando el largo de la lista (que la lista son los vendedores) le sumamos uno.
         nuevo_vendedor = Vendedores(
             nombre_vendedor=nuevo_nombre
             )
@@ -237,7 +203,7 @@ def agregar_vendedor():
         db.session.commit()
         return jsonify({'vendedores': {
             'id': nuevo_vendedor.id, 
-            'nombre_vendedor': nuevo_vendedor.nombre_vendedor}, 'id': id, 'Success': True
+            'nombre_vendedor': nuevo_vendedor.nombre_vendedor},'Success': True
             }
             ), 201
     except Exception as error:
@@ -293,21 +259,21 @@ def agregar_comprador():
         nueva_plata = data.get('plata')
         nuevo_comprador = Compradores(
             nombre_comprador=nuevo_nombre,
-            plata=nueva_plata,
+            plata=nueva_plata
             )
         db.session.add(nuevo_comprador)
         db.session.commit()
         return jsonify({'compradores': {
             'id': nuevo_comprador.id, 
             'nombre_comprador': nuevo_comprador.nombre_comprador, 
-            'plata': nuevo_comprador.plata}
+            'plata': nuevo_comprador.plata}, 'Success': True
             }
             ), 201
     except Exception as error:
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
 
-if __name__ == '__main__':
+if __name__ == 'main':
     print('Iniciando servidor...')
     db.init_app(app)
     with app.app_context():
