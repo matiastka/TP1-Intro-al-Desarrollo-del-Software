@@ -1,4 +1,4 @@
-<!--Está es la página principal de los autos (Homepage) con un vendedor loggeado-->
+<!--Está es la página principal de los autos (Homepage) de un vendedor. Con un vendedor loggeado-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -62,7 +62,7 @@
                     
                     const tarjeta = document.createElement("a");
                     tarjeta.setAttribute("class","card text-decoration-none"); 
-                    tarjeta.setAttribute("href", `/vendedor/auto?id_auto=${contenido[index].id}&id=${id}&id_pagina_vendedor=${id_pagina_vendedor}`);
+                    tarjeta.setAttribute("href", `/vendedor/auto?id_auto=${contenido[index].id}&id=${id}`);
                     
                     const imagen = document.createElement("img"); 
                     imagen.setAttribute("class", "card-img-top"); 
