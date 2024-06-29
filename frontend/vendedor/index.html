@@ -82,7 +82,7 @@
                 console.log("Tengo la lista del vendedor")
                 
                 const nombre_del_vendedor = document.getElementById("titulo_usuario"); 
-                nombre_del_vendedor.innerText = `¡Bienvenido ${contenido.nombre_vendedor}!`;    
+                nombre_del_vendedor.innerText = `¡Bienvenido/a ${contenido.nombre_vendedor}!`;    
             }
             fetch(`http://localhost:5000/vendedores/${id}`).then(request_recibida).then(obtener_vendedores).catch(recibir_error)
         </script>
