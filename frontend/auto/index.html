@@ -110,7 +110,7 @@
             ubicacion.innerText = `Ubicación: ${contenido.ubicacion}`
             
             const id_del_vendedor = document.getElementById("id_vendedor"); // Creamos la cte id_del_vendedor que se para dentro del h5 con id = id_vendedor
-            id_del_vendedor.innerHTML = `ID del vendedor: <a href="https://promiedos.com.ar">${contenido.vendedor_id}` // A la cte redireccionamos a la página del vendedor con query params.
+            id_del_vendedor.innerHTML = `ID del vendedor: <a href="auto_vendedor?id_pagina_vendedor=${contenido.vendedor_id}">${contenido.vendedor_id}` // A la cte redireccionamos a la página del vendedor con query params.
         }
         function manejar_error(error) {
             console.log("ERROR", error)
