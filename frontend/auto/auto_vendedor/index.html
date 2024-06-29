@@ -1,0 +1,91 @@
+<!--Está es la página principal de los autos (Homepage) con un vendedor loggeado-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarTrader</title> 
+    
+    <!--Para usar Boostrap: -->    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <body data-bs-theme="dark"> 
+        <div class="container"> 
+            <div class="row">
+                <div class="col mb-3">
+                    <h1 id="titulo_usuario">Cargando su usuario</h1>
+                    <a id="boton_homepage" class="btn btn-success" href="/">Volver a la página principal</a> <!--Creamos el boton para volver a la homepage y le damos el id boton_homepage -->
+                </div>
+            </div>
+        </div>
+        <div class="container"> 
+            <div class="row g-4" id="autos">
+            </div>
+        </div>
+
+        <!--Para usar Boostrap:-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+        crossorigin="anonymous"></script>
+
+        <script>
+            const parametros = new URLSearchParams(window.location.search);
+            const id_pagina_vendedor = parametros.get("id_pagina_vendedor");
+            console.log(id_pagina_vendedor)
+            
+            if (id_pagina_vendedor == 'null' || id_pagina_vendedor === '' || id_pagina_vendedor == null) {
+                window.location.href = "/";
+            }
+            // Al ancor Registrar_auto le brindamos el id del vendedor en el link.
+            document.getElementById("boton_homepage").setAttribute("href", `/`) // Se para dentro de <a> con id boton_homepage y le brindamos el id del vendedor en el link (atributo)
+            function request_recibida(respuesta) {
+                return respuesta.json()
+            }
+            function obtener_autos(contenido) {
+                console.log("Tengo la lista de los autos!");
+                console.log(contenido)
+                
+                const container = document.getElementById("autos");
+                for (let index = 0; index < contenido.length; index++) {
+                    console.log(contenido[index])
+                    if (id_pagina_vendedor == contenido[index].vendedor_id) { // Si el id del vendedor es que lmismo del vendedor_id muestra los autos correspondientes                   
+                    const item = document.createElement("div");
+                    item.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2"); 
+                    
+                    const tarjeta = document.createElement("a");
+                    tarjeta.setAttribute("class","card text-decoration-none"); 
+                    tarjeta.setAttribute("href", `/vendedor/auto?id_auto=${contenido[index].id}&id=${id_pagina_vendedor}`);
+                    
+                    const imagen = document.createElement("img"); 
+                    imagen.setAttribute("class", "card-img-top"); 
+                    imagen.setAttribute("src", contenido[index].link);
+
+                    const cuerpo_tarjeta = document.createElement("div"); 
+                    cuerpo_tarjeta.setAttribute("class", "card-body");
+
+                    cuerpo_tarjeta.append(contenido[index].nombre_auto); 
+                    tarjeta.append(imagen) 
+                    tarjeta.append(cuerpo_tarjeta) 
+                    item.append(tarjeta) 
+                    container.append(item);
+                    }
+                }   
+            }
+            function recibir_error(error) {
+                console.log("ERROR")
+                console.log(error)
+            }
+            fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_autos).catch(recibir_error)
+
+            function obtener_vendedores(contenido) {
+                console.log("Tengo la lista del vendedor")
+                
+                const nombre_del_vendedor = document.getElementById("titulo_usuario"); 
+                nombre_del_vendedor.innerText = `¡Autos de ${contenido.nombre_vendedor}!`;    
+            }
+            fetch(`http://localhost:5000/vendedores/${id_pagina_vendedor}`).then(request_recibida).then(obtener_vendedores).catch(recibir_error)
+        </script>
+</body>
+</html>
