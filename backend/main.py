@@ -8,7 +8,7 @@ app = Flask(__name__) #denominamos a flask
 CORS(app) #Con esto van a andar los fetch entre 2 páginas distintas (o una página externa)
 port = 5000
 
-app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://matiastka:kini9853@localhost:5432/db_tp1'
+app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://atufullana:misticaroja2011@localhost:5432/db_tp1'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 @app.route("/") #Si solicitan la homepage del servidor
@@ -258,6 +258,33 @@ def editar_vendedor(id_vendedor):
         print('Error', error)
         return jsonify({'mensaje': 'Error al editar el vendedor'}), 500
 
+@app.route('/compradores/<id_comprador>') #Endpoint para mostrar un comprador
+def mostrar_comprador(id_comprador):
+    try:
+        comprador = Compradores.query.get(id_comprador)
+        comprador_data = {
+            'id': comprador.id, 
+            'nombre_comprador': comprador.nombre_comprador, 
+            'plata': comprador.plata
+            }
+        return jsonify(comprador_data)
+    except: 
+        return jsonify({"mensaje":"El comprador que buscaste no existe"})
+
+@app.route('/compradores/<id_comprador>', methods=['PUT']) #Endpoint para editar el perfil de un comprador
+def editar_comprador(id_comprador):
+    try:
+        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        comprador_a_editar = Compradores.query.get(id_comprador)
+
+        comprador_a_editar.nombre_comprador = data.get('nombre_comprador')
+        db.session.commit()
+
+        return jsonify({'Success': True}), 200
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'mensaje': 'Error al editar el comprador'}), 500
+
 @app.route('/compradores', methods=['POST'])
 def agregar_comprador():
     try:
@@ -280,7 +307,7 @@ def agregar_comprador():
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
 
-if __name__ == 'main':
+if __name__ == '__main__':
     print('Iniciando servidor...')
     db.init_app(app)
     with app.app_context():
