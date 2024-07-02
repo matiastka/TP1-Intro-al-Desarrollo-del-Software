@@ -1,0 +1,88 @@
+<!--Esta es la página para añadir fondos al comprador-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarTrader</title>
+
+    <!--Para usar boostrap:-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+</head>
+<body data-bs-theme="dark">
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-12 col-md-10 col-lg-6 mx-auto">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h4 id="mostrar_plata"> Cargand Saldo </h4>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Añadir fondos a tu cartera de CarTrader</h2> 
+                        <form onsubmit="agregar_plata(event)">
+                            <div class="mb-3"> <!--Campo del fondo a agregar-->
+                                <label for="añadir_fondo" class="form-label">Ingresar Monto</label>
+                                <input type="number" class="form-control" id="añadir_fondo" min="1" max="999999" name="añadir_fondo" placeholder="1000" required>
+                            </div>
+                            <button type="submit" class="btn btn-success">Aplicar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const id_comprador = params.get("id_comprador");
+
+        if (id_comprador == 'null' || id_comprador === '' || id_comprador == null) {
+            window.location.href = "/"; 
+        }
+
+        function response_recibida(respuesta) { 
+            return respuesta.json()
+        }
+
+        function obtener_comprador(contenido) {
+            const mostrar_saldo = document.getElementById("mostrar_plata"); 
+            mostrar_saldo.innerText = `Saldo actual de la cartera: $${contenido.plata}`;      
+        }
+        function manejar_error(error) {
+            console.log("ERROR", error)
+        }
+        // Vinculamos la pagina con el endpoint que obtiene los datos de un comprador, variando por id.
+        fetch(`http://localhost:5000/compradores/${id_comprador}`).then(response_recibida).then(obtener_comprador).catch(manejar_error)
+
+        // Para aplicar los cambios realizados en el formulario lo vinculamos cuando se envie (usando el onsubmit con  el nombre de la funcion).
+        function agregar_plata(event) { 
+            event.preventDefault() 
+            
+            const formData = new FormData(event.target) // formData es un contenedor que obtiene todos los valores del Form
+
+            const plata = formData.get("añadir_fondo") // plata obtiene la data del formulario con id añadir_fondo
+            
+            console.log("La variabe ingresar monto es de tipo: ",typeof plata)
+            console.log("Esta es la plata que ingresé: ",plata)
+            
+            function editar_response(contenido) {
+                console.log(contenido)
+                if (contenido.Success === true) {
+                    console.log(contenido)
+                    alert("¡Ha ingresado sus fondos con exito!")
+                    window.location.href = `/comprador?id_comprador=${id_comprador}` // Redireccionamos a la página del comprador con su id
+                }
+                else {
+                    alert("ERROR")
+                }
+            }          
+            // Vinculamos la función agregar_plata con el endpoint de método PUT
+            fetch((`http://localhost:5000/insertar_fondos/${id_comprador}`), {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({plata: plata})
+            }).then(response_recibida).then(editar_response).catch(manejar_error)
+        }
+    </script>
+</body>
+</html>
