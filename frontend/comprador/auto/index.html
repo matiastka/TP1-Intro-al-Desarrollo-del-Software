@@ -55,7 +55,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        
+        //Creamos las variables globales que se encargan de hacer funcionar correctamente la función obtener_precio_plata(contenido)
+        let plata = 0
+        let precio = 0
+        let plata_obtenida = false
+        let precio_obtenido = false
+
         const parametros = new URLSearchParams(window.location.search);
         const id_comprador = parametros.get("id_comprador");
         const id_auto = parametros.get("id_auto");
@@ -75,8 +80,6 @@
             return respuesta.json()
         }
         function obtener_auto(contenido) {
-            console.log(contenido)
-
             const nombre_del_auto = document.getElementById("titulo_auto"); 
             nombre_del_auto.innerText = contenido.nombre_auto; 
 
@@ -88,7 +91,6 @@
              
             const caja_man = document.getElementById("tipo_caja_manual"); 
             const caja_auto = document.getElementById("tipo_caja_automatica"); 
-            console.log(contenido.caja_manual)
             if (contenido.caja_manual === true) { 
                 caja_man.innerText = "Caja manual" 
                 caja_auto.innerText = null 
@@ -129,22 +131,65 @@
         // Vinculamos la pagina del auto con el endpoint de mostrar un auto variando por id
         fetch(`http://localhost:5000/autos/${id_auto}`).then(response_recibida).then(obtener_auto).catch(manejar_error)
 
-        // Para hacer funcionar el boton Comprar:
-        function comprar_auto() { //Falta terminar
-            const confirmacion = confirm(`¿Esta seguro de que queres eliminar la publicación de id ${id_auto}?`)
+        // Para validar que el boton Comprar funcione
+        function comprar_auto() { //
+            const confirmacion = confirm(`¿Esta seguro de que queres comprar el vehículo publicación de id ${id_auto}?`)
             console.log(confirmacion)
             if (!confirmacion) {
             return;
-            if (plata < precio) {// Pensar condición que valide que tiene el precio suficiente en la cartera
-            return;
+        }
+        // Para validar que se pueda comprar un auto
+        function obtener_precio_y_plata(contenido) { // Esta función recibe 2 fetchs generales (que son el contenido) y 2 particular que son respecto a los ifs para editar la plata del comprador. 
+            console.log(contenido)
+            if (contenido.plata !== undefined) { // Si analizamos el diccionario del comprador obtiene el valor de la plata
+                plata = contenido.plata
+                console.log("Su saldo es:", plata)
+                plata_obtenida = true // Convierte la variable en true
             }
-            if (plata == precio) { // Buscar la forma la forma de obtener precio y plata
-                plata = 0
+            if (contenido.precio !== undefined) { // Si analizamos el diccionario del auto obtiene el valor del precio
+                precio = contenido.precio
+                console.log("El auto cuesta:", precio)
+                precio_obtenido = true // Convierte la variable en true
             }
-            if (plata > precio) {
-                plata = plata - precio // logica python
+            if (plata_obtenida && precio_obtenido) { //Si las variables plata_obtenida y precio_obtenido son true, conseguimos la plata final                console.log("La plata es:",plata,"El precio es:",precio)
+                plata_final = plata - precio
+                if (plata_final < 0) {
+                    alert("¡Usted no ha ingresado el monto suficiente!")
+                    return;
+                }
+                if (plata_final == 0) { //Si el precio == plata entonces resta la plata que tenía originalmente (que es igual al precio) en el endpoint de restar_fondos
+                    function editar_response(contenido) {
+                        console.log(contenido)
+                        if (contenido.Success === true) {
+                            console.log(contenido)
+                            alert("¡Ha logrado pagar con exito!")
+                        }
+                        else {
+                            alert("ERROR")
+                        }
+                    }
+                    fetch((`http://localhost:5000/restar_fondos/${id_comprador}`), {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({plata: plata})}).then(response_recibida).then(editar_response).catch(manejar_error)
+                }
+                if (plata_final > precio) { //Si el precio < plata entonces resta el precio en el endpoint de restar_fondos
+                    plata = precio
+                    function editar_response(contenido) {
+                        console.log(contenido)
+                        if (contenido.Success === true) {
+                            console.log(contenido)
+                            alert("¡Ha logrado pagar con exito!")
+                        }
+                        else {
+                            alert("ERROR")
+                        }
+                    }
+                    console.log(plata)
+                    fetch((`http://localhost:5000/restar_fondos/${id_comprador}`), {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({plata: plata})}).then(response_recibida).then(editar_response).catch(manejar_error)
+                }
             }
         }
+        fetch(`http://localhost:5000/autos/${id_auto}`).then(response_recibida).then(obtener_precio_y_plata).catch(manejar_error)
+        fetch(`http://localhost:5000/compradores/${id_comprador}`).then(response_recibida).then(obtener_precio_y_plata).catch(manejar_error)
+        
         function borrar_response(contenido) {
             if (contenido.Success === true) {
                 console.log(contenido)

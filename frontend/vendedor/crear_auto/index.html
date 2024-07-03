@@ -26,12 +26,12 @@
 
                             <div class="mb-3"> 
                                 <label for="anio" class="form-label">Año</label>
-                                <input type="number" class="form-control" id="anio" name="anio" placeholder="2015" required>
+                                <input type="number" class="form-control" id="anio" min="1886" max="2100" name="anio" placeholder="2015" required>
                             </div>
 
                             <div class="mb-3"> 
                                 <label for="cant_asientos" class="form-label">Cantidad de asientos</label>
-                                <input type="number" class="form-control" id="cant_asientos" name="cant_asientos" placeholder="5" required>
+                                <input type="number" class="form-control" id="cant_asientos" min="1" max="50" name="cant_asientos" placeholder="5" required>
                             </div>
 
                             <label class="mb-3 me-3"> Tipo de caja: </label> 
@@ -39,12 +39,11 @@
                                 <input class="form-check-input" value="caja_automatica" type="radio" name="caja" id="caja_automatica" required>
                                 <label class="form-check-label" for="caja_automatica">Caja automatica</label>
                             </div>
+
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" value="caja_manual" type="radio" name="caja" id="caja_manual" required>
                                 <label class="form-check-label" for="caja_manual">Caja manual</label>
                             </div>
-                            
-                            <br> 
 
                             <div class="mb-3"> 
                                 <label for="color" class="form-label">Color</label>
@@ -53,7 +52,7 @@
                             
                             <div class="mb-3"> 
                                 <label for="kilometros" class="form-label">Kilometros</label>
-                                <input type="number" class="form-control" id="kilometros" name="kilometros" placeholder="0" required>
+                                <input type="number" class="form-control" id="kilometros" min="0" max="999999" name="kilometros" placeholder="0" required>
                             </div>
 
                             <div class="mb-3"> 
@@ -68,7 +67,7 @@
 
                             <div class="mb-3"> 
                                 <label for="precio" class="form-label">Precio (USD)</label>
-                                <input type="number" class="form-control" id="precio" name="precio" placeholder="1000" required>
+                                <input type="number" class="form-control" id="precio" min="1" max="999999"name="precio" placeholder="1000" required>
                             </div>
 
                             <label for="baul mb-1">Tipo de Baúl</label> 

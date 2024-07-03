@@ -251,6 +251,34 @@ def editar_comprador(id_comprador):
         print('Error', error)
         return jsonify({'mensaje': 'Error al editar el comprador'}), 500
 
+@app.route('/insertar_fondos/<id_comprador>', methods=['PUT'])
+def agregar_fondo(id_comprador):
+    try:
+        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        comprador = Compradores.query.get(id_comprador)
+        plata_ingresada = data.get('plata') #Obtiene el valor de la columna nombre_comprador
+        comprador.plata += int(plata_ingresada)
+        print(comprador.plata)
+        db.session.commit()
+        return jsonify({'Success': True}), 200
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'mensaje': 'Error interno del server'}), 500
+
+@app.route('/restar_fondos/<id_comprador>', methods=['PUT'])
+def restar_fondo(id_comprador):
+    try:
+        data = request.json 
+        comprador = Compradores.query.get(id_comprador)
+        plata_ingresada = data.get('plata')
+        comprador.plata -= int(plata_ingresada)
+        print(comprador.plata)
+        db.session.commit()
+        return jsonify({'Success': True}), 200
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'mensaje': 'Error interno del server'}), 500
+    
 @app.route('/compradores', methods=['POST'])
 def agregar_comprador():
     try:
@@ -272,6 +300,7 @@ def agregar_comprador():
     except Exception as error:
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
+
 
 if __name__ == 'main':
     print('Iniciando servidor...')

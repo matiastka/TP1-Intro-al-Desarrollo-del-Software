@@ -1,4 +1,4 @@
-<!--Esta es página para editar las caractersticas de un comprador-->
+<!--Esta es la página para añadir fondos al comprador-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,13 +14,18 @@
     <div class="container my-4">
         <div class="row">
             <div class="col-12 col-md-10 col-lg-6 mx-auto">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h4 id="mostrar_plata"> Cargand Saldo </h4>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="card-title">Editar Comprador</h2> 
-                        <form onsubmit="modificar_comprador(event)">
-                            <div class="mb-3"> <!--Campo del nombre del comprador-->
-                                <label for="nombre_comprador" class="form-label">Nombre del comprador</label>
-                                <input type="text" class="form-control" id="nombre_comprador" name="nombre_comprador" placeholder="Pepe" required>
+                        <h2 class="card-title">Añadir fondos a tu cartera de CarTrader</h2> 
+                        <form onsubmit="agregar_plata(event)">
+                            <div class="mb-3"> <!--Campo del fondo a agregar-->
+                                <label for="añadir_fondo" class="form-label">Ingresar Monto</label>
+                                <input type="number" class="form-control" id="añadir_fondo" min="1" max="999999" name="añadir_fondo" placeholder="1000" required>
                             </div>
                             <button type="submit" class="btn btn-success">Aplicar</button>
                             </form>
@@ -42,9 +47,9 @@
             return respuesta.json()
         }
 
-        function obtener_comprador(contenido) { 
-            document.getElementById("nombre_comprador").value = contenido.nombre_comprador
-
+        function obtener_comprador(contenido) {
+            const mostrar_saldo = document.getElementById("mostrar_plata"); 
+            mostrar_saldo.innerText = `Saldo actual de la cartera: $${contenido.plata}`;      
         }
         function manejar_error(error) {
             console.log("ERROR", error)
@@ -53,26 +58,29 @@
         fetch(`http://localhost:5000/compradores/${id_comprador}`).then(response_recibida).then(obtener_comprador).catch(manejar_error)
 
         // Para aplicar los cambios realizados en el formulario lo vinculamos cuando se envie (usando el onsubmit con  el nombre de la funcion).
-        function modificar_comprador(event) { 
+        function agregar_plata(event) { 
             event.preventDefault() 
             
             const formData = new FormData(event.target) // formData es un contenedor que obtiene todos los valores del Form
 
-            const nombre_comprador = formData.get("nombre_comprador") // nombre_vendedor obtiene la data del formulario con id nombre_comprador
-
+            const plata = formData.get("añadir_fondo") // plata obtiene la data del formulario con id añadir_fondo
+            
+            console.log("La variabe ingresar monto es de tipo: ",typeof plata)
+            console.log("Esta es la plata que ingresé: ",plata)
+            
             function editar_response(contenido) {
                 console.log(contenido)
                 if (contenido.Success === true) {
                     console.log(contenido)
-                    alert("¡Su usuario se ha editado con exito!")
+                    alert("¡Ha ingresado sus fondos con exito!")
                     window.location.href = `/comprador?id_comprador=${id_comprador}` // Redireccionamos a la página del comprador con su id
                 }
                 else {
                     alert("ERROR")
                 }
             }          
-            // Vinculamos la función modificar_comprador con el endpoint de método PUT
-            fetch((`http://localhost:5000/compradores/${id_comprador}`), {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({nombre_comprador: nombre_comprador})
+            // Vinculamos la función agregar_plata con el endpoint de método PUT
+            fetch((`http://localhost:5000/insertar_fondos/${id_comprador}`), {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({plata: plata})
             }).then(response_recibida).then(editar_response).catch(manejar_error)
         }
     </script>
