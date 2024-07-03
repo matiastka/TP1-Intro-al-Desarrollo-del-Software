@@ -19,6 +19,12 @@
                     <a id="boton_añadir_fondos" class="btn btn-success" href="agregar_fondos">Ingresar Fondos </a> <!--Creamos el boton Ingresar fondos para agregar fondos al perfil, con id boton_añadir_fondos -->
                     <a id="boton_editar_comprador" class="btn btn-warning" href="editar_comprador">Modificar perfil</a> <!--Creamos el boton Editar para editar el perfil, con id boton_editar_comprador -->
                 </div>
+                <div class="col mb-auto">
+                    <div class="card mt-2 border-5">
+                        <h4 id="mostrar_plata"> Cargand Saldo </h4>
+                    </div>
+                    
+                </div>
             </div>
         </div>
         <div class="container"> 
@@ -77,10 +83,13 @@
             fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_autos).catch(recibir_error)
 
             function obtener_compradores(contenido) {
-                console.log("Tengo la lista del comprador")
+                console.log("Tengo la info del comprador")
                 
                 const nombre_del_comprador = document.getElementById("titulo_usuario"); 
-                nombre_del_comprador.innerText = `¡Bienvenido/a ${contenido.nombre_comprador}!`;    
+                nombre_del_comprador.innerText = `¡Bienvenido/a ${contenido.nombre_comprador}!`;
+
+                const mostrar_saldo = document.getElementById("mostrar_plata"); 
+                mostrar_saldo.innerText = `Saldo actual de la cartera: $${contenido.plata}`; 
             }
             fetch(`http://localhost:5000/compradores/${id_comprador}`).then(request_recibida).then(obtener_compradores).catch(recibir_error)
         </script>
