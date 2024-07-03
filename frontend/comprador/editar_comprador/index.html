@@ -42,7 +42,7 @@
             return respuesta.json()
         }
 
-        function obtener_vendedor(contenido) { 
+        function obtener_comprador(contenido) { 
             document.getElementById("nombre_comprador").value = contenido.nombre_comprador
 
         }
@@ -50,7 +50,7 @@
             console.log("ERROR", error)
         }
         // Vinculamos la pagina con el endpoint que obtiene los datos de un comprador, variando por id.
-        fetch(`http://localhost:5000/compradores/${id_comprador}`).then(response_recibida).then(obtener_vendedor).catch(manejar_error)
+        fetch(`http://localhost:5000/compradores/${id_comprador}`).then(response_recibida).then(obtener_comprador).catch(manejar_error)
 
         // Para aplicar los cambios realizados en el formulario lo vinculamos cuando se envie (usando el onsubmit con  el nombre de la funcion).
         function modificar_comprador(event) { 
