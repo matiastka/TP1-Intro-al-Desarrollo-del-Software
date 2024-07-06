@@ -17,6 +17,7 @@
             <div class="row">
                 <div class="col-12 col-md-10 mx-auto">
                     <div class="card">
+                        <a id="boton_homepage_vendedor" class="btn btn-primary" href="/">Volver a la página principal</a> <!--Creamos el boton para volver a la homepage de los autos con el comprador logeado y le damos el id boton_homepage -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
@@ -38,9 +39,9 @@
                                     
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button class="btn btn-danger" onclick="eliminar_auto()">Eliminar</button> <!--Creamos el boton Eliminar-->
-                                <a id="boton_editar" class="btn btn-warning" href="/auto/editar?">Editar</a> <!--Creamos el boton Editar (es un ancor) y terminarlo -->
+                            <div class="card-footer d-flex"> <!-- d-flex permite que los botones de esta clase tengan margen-->
+                                <button class="btn btn-danger" onclick="eliminar_auto()" style="margin-right: auto;">Eliminar</button>
+                                <a id="boton_editar" class="btn btn-warning" href="/auto/editar?" style="margin-left: auto;">Editar</a>
                             </div>
                         </div>
                     </div>
@@ -68,6 +69,8 @@
         if (id_auto === null || id_auto === '') { 
             window.location.href = `/vendedor?id=${id}`; // Si el id_auto no existe entonces redirecciona a la homepage del vendedor
         }
+        
+        document.getElementById("boton_homepage_vendedor").setAttribute("href", `/vendedor?id=${id} `) // Se para dentro de <a> con id boton_homepage y le brindamos el id del comprador en el link 
         
         // Al ancor Editar le brindamos el id_auto en el link. 
         document.getElementById("boton_editar").setAttribute("href", `/vendedor/auto/editar?id_auto=${id_auto}&id=${id}`) // Se para dentro del boton_editar y en su link obtiene el id del auto y del vendedor
@@ -120,21 +123,27 @@
             const ubicacion = document.getElementById("la_ubicacion");
             ubicacion.innerText = `Ubicación: ${contenido.ubicacion}`
             
-            const id_del_vendedor = document.getElementById("id_vendedor"); 
-            id_del_vendedor.innerHTML = `ID del vendedor: <a href="autos_vendedor?id_pagina_vendedor=${contenido.vendedor_id}&id=${id}">${contenido.vendedor_id}` // Redireccionamos a la página del vendedor de ese auto con dicho id y con el id del usuario logeado.
-
+            const id_del_propietario = contenido.vendedor_id
+            console.log(id_del_propietario)
+            function obtener_propietario(contenido) {
+                console.log("Tengo las caractersticas del propietario del auto",contenido)
+                const id_del_vendedor = document.getElementById("id_vendedor"); 
+                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}&id=${contenido.id}">${contenido.nombre_vendedor}`; // Redireccionamos a la página del vendedor de ese auto con dicho id y con el id del usuario logeado.
+            }
+            // Dentro la función obtener_auto con el endpoit de un vendedor que varía por id
+            fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))  // Hacemos uso de la forma rápida para hacer .then de response y .catch de error porque no sabemos si lee dichas funciones este fecth
         }
         function manejar_error(error) {
             console.log("ERROR", error)
         }
-        // Vinculamos esta la pagina del auto con el endpoint de mostrar un auto
+        // Vinculamos la pagina del auto con el endpoint de mostrar un auto
         fetch(`http://localhost:5000/autos/${id_auto}`).then(response_recibida).then(obtener_auto).catch(manejar_error)
-
-        // Para hacer funcionar el boton Eliminar:
-        function eliminar_auto() {
+        
+        // Para hacer funcionar el boton Eliminar, creamos la función eliminar_auto y hacemos un fetch con metodo DELETE:
+        function eliminar_auto() { 
             const confirmacion = confirm(`¿Esta seguro de que queres eliminar la publicación de id ${id_auto}?`)
             console.log(confirmacion)
-            if (!confirmacion) {
+            if (!confirmacion) { // Si la confirmación es false entonces termina la función 
             return;
         }
         

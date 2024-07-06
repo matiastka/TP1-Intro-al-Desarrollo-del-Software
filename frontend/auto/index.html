@@ -17,6 +17,7 @@
             <div class="row">
                 <div class="col-12 col-md-10 mx-auto"> <!--A las columnas le damos ese atributo para que las muestre bien dependiendo del tamaño de la página y para que se centre uso mx-auto-->
                     <div class="card">
+                        <a id="boton_hompage_comprador" class="btn btn-primary" href="/">Volver a la página principal </a> <!--Boton que redirecciona a la homepage -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
@@ -64,6 +65,7 @@
         function response_recibida(respuesta) { 
             return respuesta.json()
         }
+
         function obtener_auto(contenido) { // Función que brinda la respuesta que queremos del endpoint
             console.log(contenido)
 
@@ -109,35 +111,24 @@
             const ubicacion = document.getElementById("la_ubicacion");
             ubicacion.innerText = `Ubicación: ${contenido.ubicacion}`
             
-            const id_del_vendedor = document.getElementById("id_vendedor"); // Creamos la cte id_del_vendedor que se para dentro del h5 con id = id_vendedor
-            id_del_vendedor.innerHTML = `ID del vendedor: <a href="auto_vendedor?id_pagina_vendedor=${contenido.vendedor_id}">${contenido.vendedor_id}` // A la cte redireccionamos a la página del vendedor con query params.
+            const id_del_propietario = contenido.vendedor_id //Obtenemos el id del vendedor
+            console.log(id_del_propietario)
+            function obtener_propietario(contenido) {
+                console.log("Tengo las caractersticas del propietario del auto",contenido)
+                const id_del_vendedor = document.getElementById("id_vendedor"); // Creamos la cte id_del_vendedor que se para dentro del h5 con id = id_vendedor
+                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}">${contenido.nombre_vendedor}`; // Redireccionamos a la página del propietario del auto con query params
+            }
+            // Dentro la función obtener_auto con el endpoit de un vendedor que varía por id
+            fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))  // Hacemos uso de la forma rápida para hacer .then de response y .catch de error porque no sabemos si lee dichas funciones este fecth            
+
         }
         function manejar_error(error) {
             console.log("ERROR", error)
         }
+
         // Vinculamos esta la pagina del auto con el endpoint de mostrar un auto
         fetch(`http://localhost:5000/autos/${id}`).then(response_recibida).then(obtener_auto).catch(manejar_error)
 
-        // Para poder hacer andar el botón remove la vinculamos a la función remove_character y tenemos que hacer un endpoint para borrar (el fetch):
-        function eliminar_auto() {
-            const confirmacion = confirm(`¿Esta seguro de que queres eliminar la publicación de id ${id}?`) // Creamos la constante confirmation que es un confirm de si se quiere borrar el personaje. Si es Aceptar, es true y si es cancelar, es false
-            console.log(confirmacion)
-            if (!confirmacion) { // Si la confirmación es false entonces termina la función 
-            return;
-        }
-        // Función para el segundo then
-        function borrar_response(contenido) { // En este caso content es el diccionario {success: remove_character(id)}. Porque el endpoint de /characters/<id> con metodo DELETE devuelve un diccionario
-            if (contenido.Success === true) { // Si el contenido (el diccionario {succes: booleano} tiene de valor true 
-                console.log(contenido)
-                alert("La publicación se ha eliminado con exito") // Avisa que fue borrado exitosamente
-                window.location.href = "/"; // Redirecciona a la homepage
-            }
-            else {
-                alert("Un error a ocurrido. Intentelo de nuevo") // Si algo salió mal avisa que algo salió mal
-            }
-        }
-        fetch(`http://127.0.0.1:5000/autos/${id}`, { method: "DELETE" }).then(response_recibida).then(borrar_response).catch(manejar_error)
-        }
     </script>
 </body>
 </html>
