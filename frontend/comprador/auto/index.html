@@ -142,76 +142,57 @@
         fetch(`http://localhost:5000/autos/${id_auto}`).then(response_recibida).then(obtener_auto).catch(manejar_error)
 
         // Para validar que el boton Comprar funcione
-        function comprar_auto() { //
-            const confirmacion = confirm(`¿Esta seguro de que queres comprar el vehículo publicación de id ${id_auto}?`)
+        function comprar_auto() {
+            const confirmacion = confirm(`¿Esta seguro de que queres comprar el vehículo publicación de id ${id_auto}?`);
             console.log(confirmacion)
             if (!confirmacion) {
-            return;
-        }
-        // Para validar que se pueda comprar un auto
-        function obtener_precio_y_plata(contenido) { // Esta función recibe 2 fetchs generales (que son el contenido) y 2 particular que son respecto a los ifs para editar la plata del comprador. 
-            console.log(contenido)
-            if (contenido.plata !== undefined) { // Si analizamos el diccionario del comprador obtiene el valor de la plata
-                plata = contenido.plata
-                console.log("Su saldo es:", plata)
-                plata_obtenida = true // Convierte la variable en true
+                return;
             }
-            if (contenido.precio !== undefined) { // Si analizamos el diccionario del auto obtiene el valor del precio
-                precio = contenido.precio
-                console.log("El auto cuesta:", precio)
-                precio_obtenido = true // Convierte la variable en true
-            }
-            if (plata_obtenida && precio_obtenido) { //Si las variables plata_obtenida y precio_obtenido son true, conseguimos la plata final                console.log("La plata es:",plata,"El precio es:",precio)
-                plata_final = plata - precio
-                if (plata_final < 0) {
-                    alert("¡Usted no ha ingresado el monto suficiente!")
-                    return;
+
+            // Para validar que se pueda comprar un auto
+            function obtener_precio_y_plata(contenido) { // Esta función recibe 2 fetchs generales (que son el contenido) y 2 particular que son respecto a los ifs para editar la plata del comprador.
+                console.log(contenido)
+                if (contenido.plata !== undefined) { // Si analizamos el diccionario del comprador obtiene el valor de la plata
+                    plata = contenido.plata;
+                    console.log("Su saldo es ", plata)
+                    plata_obtenida = true; // Convierte la variable en true
                 }
-                if (plata_final == 0) { //Si el precio == plata entonces resta la plata que tenía originalmente (que es igual al precio) en el endpoint de restar_fondos
-                    function editar_response(contenido) {
-                        console.log(contenido)
-                        if (contenido.Success === true) {
-                            console.log(contenido)
-                            alert("¡Ha logrado pagar con exito!")
+                if (contenido.precio !== undefined) { // Si analizamos el diccionario del auto obtiene el valor del precio
+                    precio = contenido.precio;
+                    console.log("El auto cuesta ", precio)
+                    precio_obtenido = true; // Convierte la variable en true
+                }
+                if (plata_obtenida && precio_obtenido) { //Si las variables plata_obtenida y precio_obtenido son true, conseguimos la plata final
+                    let plata_final = plata - precio;
+                    if (plata_final < 0) {
+                        alert("¡Usted no ha ingresado el monto suficiente!");
+                    } else { //Si el precio >= 0 entonces avisa que se pago con exito y resta el monto correspondiente
+                        function editar_response(contenido) { // Cortesia chatgpt
+                            console.log("Soy el console log:",contenido)
+                            if (contenido.Success === true) {
+                                alert("¡Ha logrado pagar con exito!");
+                                // Eliminar el auto después de confirmar el pago
+                                fetch(`http://127.0.0.1:5000/autos/${id_auto}`, { method: "DELETE" }).then(response_recibida).then(borrar_response).catch(manejar_error);
+                            } else {
+                                alert("ERROR");
+                            }
                         }
-                        else {
-                            alert("ERROR")
-                        }
+                        fetch(`http://localhost:5000/restar_fondos/${id_comprador}`, {method: "PUT",headers: { "Content-Type": "application/json" },body: JSON.stringify({ plata: precio })}).then(response_recibida).then(editar_response).catch(manejar_error);
                     }
-                    fetch((`http://localhost:5000/restar_fondos/${id_comprador}`), {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({plata: plata})}).then(response_recibida).then(editar_response).catch(manejar_error)
-                }
-                if (plata_final > precio) { //Si el precio < plata entonces resta el precio en el endpoint de restar_fondos
-                    plata = precio
-                    function editar_response(contenido) {
-                        console.log(contenido)
-                        if (contenido.Success === true) {
-                            console.log(contenido)
-                            alert("¡Ha logrado pagar con exito!")
-                        }
-                        else {
-                            alert("ERROR")
-                        }
-                    }
-                    console.log(plata)
-                    fetch((`http://localhost:5000/restar_fondos/${id_comprador}`), {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({plata: plata})}).then(response_recibida).then(editar_response).catch(manejar_error)
-                }
+                } // Hasta aca llega el señor gpt
             }
+
+            fetch(`http://localhost:5000/autos/${id_auto}`).then(response_recibida).then(obtener_precio_y_plata).catch(manejar_error);
+            fetch(`http://localhost:5000/compradores/${id_comprador}`).then(response_recibida).then(obtener_precio_y_plata).catch(manejar_error);
         }
-        fetch(`http://localhost:5000/autos/${id_auto}`).then(response_recibida).then(obtener_precio_y_plata).catch(manejar_error)
-        fetch(`http://localhost:5000/compradores/${id_comprador}`).then(response_recibida).then(obtener_precio_y_plata).catch(manejar_error)
-        
+
         function borrar_response(contenido) {
             if (contenido.Success === true) {
-                console.log(contenido)
-                alert("¡Se ha comprado con exito!")
-                window.location.href = `/comprador?id_comprador=${id_comprador}`; // Redirecciona a la homepage del comprador
+                alert("¡Se ha comprado con exito!");
+                window.location.href = `/comprador?id_comprador=${id_comprador}`; // Redireccion a la homepage del comprador
+            } else {
+                alert("Un error a ocurrido. Intentelo de nuevo");
             }
-            else {
-                alert("Un error a ocurrido. Intentelo de nuevo")
-            }
-        }
-        fetch(
-            `http://127.0.0.1:5000/autos/${id_auto}`, { method: "DELETE" }).then(response_recibida).then(borrar_response).catch(manejar_error)
         }
     </script>
 </body>
