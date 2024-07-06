@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-12 col-md-10 mx-auto">
                     <div class="card">
-                        <a id="boton_hompage_comprador" class="btn btn-success" href="">Volver a la página principal </a> <!--Boton que redirecciona a ninguna parte, con id boton_hompage_comprador -->
+                        <a id="boton_hompage_comprador" class="btn btn-primary" href="">Volver a la página principal </a> <!--Boton que redirecciona a ninguna parte, con id boton_hompage_comprador -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
@@ -121,8 +121,18 @@
             const ubicacion = document.getElementById("la_ubicacion");
             ubicacion.innerText = `Ubicación: ${contenido.ubicacion}`
             
-            const id_del_vendedor = document.getElementById("id_vendedor"); 
-            id_del_vendedor.innerHTML = `ID del vendedor: <a href="autos_vendedor?id_pagina_vendedor=${contenido.vendedor_id}&id_comprador=${id_comprador}">${contenido.vendedor_id}` // Redireccionamos a la página del vendedor de ese auto con dicho id y con el id del usuario logeado.
+            const id_del_propietario = contenido.vendedor_id
+            console.log(id_del_propietario)
+            function obtener_propietario(contenido) {
+                console.log("Tengo las caractersticas del propietario del auto",contenido)
+                const id_del_vendedor = document.getElementById("id_vendedor"); 
+                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}&id_comprador=${id_comprador}">${contenido.nombre_vendedor}`; // Redireccionamos a la página del vendedor de ese auto con dicho id y con el id del usuario logeado.
+            }
+            // Dentro la función obtener_auto con el endpoit de un vendedor que varía por id
+            fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))  // Hacemos uso de la forma rápida para hacer .then de response y .catch de error porque no sabemos si lee dichas funciones este fecth
+
+            //const id_del_vendedor = document.getElementById("id_vendedor"); 
+            //id_del_vendedor.innerHTML = `ID del vendedor: <a href="autos_vendedor?id_pagina_vendedor=${contenido.vendedor_id}&id_comprador=${id_comprador}">${contenido.vendedor_id}` 
 
         }
         function manejar_error(error) {
