@@ -22,13 +22,16 @@
                                 <label for="nombre_comprador" class="form-label">Nombre del comprador</label>
                                 <input type="text" class="form-control" id="nombre_comprador" name="nombre_comprador" placeholder="Pepe" required>
                             </div>
-                            <button type="submit" class="btn btn-success">Aplicar</button>
-                            </form>
-                        </div>
+                            <div class="d-flex">
+                                <button type="submit" class="btn btn-success" style="margin-right: auto;">Editar</button>
+                                <a id="boton_cancelar" class="btn btn-danger" href="" style="margin-left: auto;">Cancelar</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         const params = new URLSearchParams(window.location.search);
@@ -37,6 +40,9 @@
         if (id_comprador == 'null' || id_comprador === '' || id_comprador == null) {
             window.location.href = "/"; 
         }
+
+        // Actualizamos dinámicamente la redirección del ancor cancelar
+        document.getElementById("boton_cancelar").setAttribute("href", `/comprador?id_comprador=${id_comprador} `)
 
         function response_recibida(respuesta) { 
             return respuesta.json()

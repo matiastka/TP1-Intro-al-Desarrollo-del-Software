@@ -39,8 +39,8 @@
                                     
                                 </div>
                             </div>
-                            <div class="card-footer">
-                                <button class="btn btn-danger" onclick="comprar_auto()">Comprar</button> <!--Creamos el boton Comprar-->
+                            <div class="d-flex mt-4">
+                                <button class="card-body btn btn-danger" onclick="comprar_auto()">Comprar</button> <!--Creamos el boton Comprar-->
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,8 @@
         if (id_auto === null || id_auto === '') { 
             window.location.href = `/comprador?id_comprador=${id_comprador}`; 
         }
-
+        
+        //Al ancor de volver a la página principal le damos la redirección dinámica para que regrese a la homepage del comprador
         document.getElementById("boton_hompage_comprador").setAttribute("href", `/comprador?id_comprador=${id_comprador}`) // Se para dentro de <a> con id boton_hompage_comprador y en la redirección le brindamos el id_comprador
         
         function response_recibida(respuesta) { 
@@ -130,9 +131,6 @@
             }
             // Dentro la función obtener_auto con el endpoit de un vendedor que varía por id
             fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))  // Hacemos uso de la forma rápida para hacer .then de response y .catch de error porque no sabemos si lee dichas funciones este fecth
-
-            //const id_del_vendedor = document.getElementById("id_vendedor"); 
-            //id_del_vendedor.innerHTML = `ID del vendedor: <a href="autos_vendedor?id_pagina_vendedor=${contenido.vendedor_id}&id_comprador=${id_comprador}">${contenido.vendedor_id}` 
 
         }
         function manejar_error(error) {
