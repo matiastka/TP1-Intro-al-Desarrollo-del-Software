@@ -39,10 +39,7 @@
                                     
                                 </div>
                             </div>
-                            <div class="card-footer d-flex"> <!-- d-flex permite que los botones de esta clase tengan margen. Cortesía de Aria-->
-                                <button class="btn btn-danger" onclick="eliminar_auto()" style="margin-right: auto;">Eliminar</button>
-                                <a id="boton_editar" class="btn btn-warning" href="/auto/editar?" style="margin-left: auto;">Editar</a>
-                            </div>
+                            <div id="botones"></div>
                         </div>
                     </div>
                 </div>
@@ -70,11 +67,9 @@
             window.location.href = `/vendedor?id=${id}`; // Si el id_auto no existe entonces redirecciona a la homepage del vendedor
         }
         
+        // Al ancor "Volver a la página principal" redireccionamos a la página del vendedor por su id.
         document.getElementById("boton_homepage_vendedor").setAttribute("href", `/vendedor?id=${id} `) // Se para dentro de <a> con id boton_homepage y le brindamos el id del comprador en el link 
         
-        // Al ancor Editar le brindamos el id_auto en el link. 
-        document.getElementById("boton_editar").setAttribute("href", `/vendedor/auto/editar?id_auto=${id_auto}&id=${id}`) // Se para dentro del boton_editar y en su link obtiene el id del auto y del vendedor
-
         function response_recibida(respuesta) { 
             return respuesta.json()
         }
@@ -125,10 +120,36 @@
             
             const id_del_propietario = contenido.vendedor_id
             console.log(id_del_propietario)
+            
+            // Creamos el div donde estan los botones Eliminar y Editar (incluidos estos) que solo se muestran si el id del vendedor loggeado es igual al id del propietario
+            if (id_del_propietario == id) { 
+                const conteiner = document.getElementById("botones")
+                console.log(conteiner)
+
+                const lugar_de_botones = document.createElement("div")
+                lugar_de_botones.setAttribute("class", "card-footer d-flex")
+                
+                const boton_eliminar = document.createElement("button")
+                boton_eliminar.setAttribute("class", "btn btn-danger")
+                boton_eliminar.setAttribute("onclick", "eliminar_auto()")
+                boton_eliminar.setAttribute("style", "margin-right: auto;")
+                boton_eliminar.append("Eliminar")
+
+                const boton_editar = document.createElement("a")
+                boton_editar.setAttribute("class", "btn btn-warning")
+                boton_editar.setAttribute("href", `/vendedor/auto/editar?id_auto=${id_auto}&id=${id}`)
+                boton_editar.setAttribute("style", "margin-left: auto;")
+                boton_editar.append("Editar")
+                
+                lugar_de_botones.append(boton_eliminar)
+                lugar_de_botones.append(boton_editar)
+                conteiner.append(lugar_de_botones)
+            }
+
             function obtener_propietario(contenido) {
                 console.log("Tengo las caractersticas del propietario del auto",contenido)
                 const id_del_vendedor = document.getElementById("id_vendedor"); 
-                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}&id=${contenido.id}">${contenido.nombre_vendedor}`; // Redireccionamos a la página del vendedor de ese auto con dicho id y con el id del usuario logeado.
+                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}&id=${id}">${contenido.nombre_vendedor}`; // Redireccionamos a la página del vendedor de ese auto con dicho id y con el id del usuario logeado.
             }
             // Dentro la función obtener_auto con el endpoit de un vendedor que varía por id
             fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))  // Hacemos uso de la forma rápida para hacer .then de response y .catch de error porque no sabemos si lee dichas funciones este fecth
