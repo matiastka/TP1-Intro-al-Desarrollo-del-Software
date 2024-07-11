@@ -27,7 +27,10 @@
                                 <label for="añadir_fondo" class="form-label">Ingresar Monto</label>
                                 <input type="number" class="form-control" id="añadir_fondo" min="1" max="999999" name="añadir_fondo" placeholder="1000" required>
                             </div>
-                            <button type="submit" class="btn btn-success">Aplicar</button>
+                            <div class="d-flex">
+                                <button type="submit" class="btn btn-success" style="margin-right: auto;">Agregar</button>
+                                <a id="boton_cancelar" class="btn btn-danger" href="" style="margin-left: auto;">Cancelar</a>
+                            </div>
                             </form>
                         </div>
                     </div>
@@ -46,6 +49,9 @@
         function response_recibida(respuesta) { 
             return respuesta.json()
         }
+
+        // Actualizamos dinámicamente la redirección del ancor cancelar
+        document.getElementById("boton_cancelar").setAttribute("href", `/comprador?id_comprador=${id_comprador} `)
 
         function obtener_comprador(contenido) {
             const mostrar_saldo = document.getElementById("mostrar_plata"); 
