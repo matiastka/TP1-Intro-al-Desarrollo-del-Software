@@ -1,4 +1,4 @@
-<!--Está es la página principal de los autos (Homepage) con un comprador loggeado-->
+<!--Está es la página principal de los autos con un comprador loggeado-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -15,15 +15,22 @@
         <div class="container"> 
             <div class="row">
                 <div class="col mb-3">
-                    <h1 id="titulo_usuario">Cargando su usuario</h1>
-                    <a id="boton_añadir_fondos" class="btn btn-success" href="agregar_fondos">Ingresar Fondos </a> <!--Creamos el boton Ingresar fondos para agregar fondos al perfil, con id boton_añadir_fondos -->
-                    <a id="boton_editar_comprador" class="btn btn-warning" href="editar_comprador">Modificar perfil</a> <!--Creamos el boton Editar para editar el perfil, con id boton_editar_comprador -->
-                </div>
-                <div class="col mb-auto">
-                    <div class="card mt-2 border-5">
-                        <h4 id="mostrar_plata"> Cargand Saldo </h4>
+                    <nav class="bg-dark-subtle p-2 text-dark bg-opacity-10">
+                        <ul class="nav justify-content-end">
+                            <li class="nav-item mx-2">
+                                <a id="boton_añadir_fondos" class="nav-link btn btn-success" href="agregar_fondos">Ingresar Fondos </a> <!--Creamos el boton Ingresar fondos para agregar fondos al perfil, con id boton_añadir_fondos -->
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a id="boton_editar_comprador" class="nav-link btn btn-warning" href="editar_comprador">Modificar perfil</a> <!--Creamos el boton Editar para editar el perfil, con id boton_editar_comprador -->
+                            </li>
+                        </ul>
+                    </nav>
+                    <div class="col my-1">
+                        <h1 class="display-3" id="titulo_usuario">Cargando su usuario</h1>
+                        <div class="card border-5 d-inline-block" >
+                            <h4 class="p-1" id="mostrar_plata"> Cargand Saldo </h4>
+                        </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
