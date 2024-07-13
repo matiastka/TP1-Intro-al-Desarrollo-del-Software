@@ -44,10 +44,12 @@
         crossorigin="anonymous"></script>
 
         <script>
+            
+            // Obtenemos el id del propietario de los autos
             const parametros = new URLSearchParams(window.location.search)
             const id_pagina_vendedor = parametros.get("id_pagina_vendedor")
-            console.log(id_pagina_vendedor)
             
+            // Validamos que no sea nulo dicho id
             if (id_pagina_vendedor == 'null' || id_pagina_vendedor === '' || id_pagina_vendedor == null) {
                 window.location.href = "/"
             }
@@ -55,7 +57,7 @@
             function request_recibida(respuesta) {
                 return respuesta.json()
             }
-            function obtener_autos(contenido) { // Obtenemos todos los autos que tiene un vendedor
+            function obtener_autos(contenido) { // Obitiene y muestra todos los autos de un propietario
                 console.log("Tengo la lista de los autos!")
                 console.log(contenido)
                 
@@ -89,6 +91,7 @@
                 console.log("ERROR")
                 console.log(error)
             }
+            // Vinculamos la página con el endpoint de mostrar_autos()
             fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_autos).catch(recibir_error)
 
             function obtener_vendedores(contenido) { // Obtenemos el nombre del usuario y lo escribimos en el h1 con id "titulo_usuario"
@@ -97,6 +100,7 @@
                 const nombre_del_vendedor = document.getElementById("titulo_usuario") 
                 nombre_del_vendedor.innerText = `¡Autos de ${contenido.nombre_vendedor}!`    
             }
+            // Vinculamos la página con el endpoint de mostrar_vendedor()
             fetch(`http://localhost:5000/vendedores/${id_pagina_vendedor}`).then(request_recibida).then(obtener_vendedores).catch(recibir_error)
         </script>
 </body>
