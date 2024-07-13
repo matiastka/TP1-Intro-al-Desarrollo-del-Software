@@ -10,6 +10,8 @@
 	<li>Boostrap/CSS</li>
 	<li>Javascript</li>
 	<li>Python</li>
+	<li>Flask</li>
+	<li>PSQL</li>
 </ul>
 </div>
 <h2>Como correr la pagina web</h2>
