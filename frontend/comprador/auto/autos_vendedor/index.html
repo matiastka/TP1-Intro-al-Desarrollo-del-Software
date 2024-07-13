@@ -12,7 +12,7 @@
     
     <style>
         img {
-            aspect-ratio: 3/4;
+            aspect-ratio: 3/4
         }
     </style>
     
@@ -43,18 +43,18 @@
         crossorigin="anonymous"></script>
 
         <script>
-            const parametros = new URLSearchParams(window.location.search);
-            const id_comprador = parametros.get("id_comprador");
+            const parametros = new URLSearchParams(window.location.search)
+            const id_comprador = parametros.get("id_comprador")
             const id_pagina_vendedor = parametros.get("id_pagina_vendedor")
             console.log(id_comprador)
             console.log(id_pagina_vendedor)
             
             if (id_comprador == 'null' || id_comprador === '' || id_comprador == null) {
-                window.location.href = "/";
+                window.location.href = "/"
             }
 
             if (id_pagina_vendedor == 'null' || id_pagina_vendedor === '' || id_pagina_vendedor == null) {
-                window.location.href = `/comprador?id_comprador=${id_comprador}`;
+                window.location.href = `/comprador?id_comprador=${id_comprador}`
             }
             
             document.getElementById("boton_homepage_comprador").setAttribute("href", `/comprador?id_comprador=${id_comprador}`) // Se para dentro de <a> con id boton_homepage y le brindamos el id del comprador en el link 
@@ -63,32 +63,32 @@
                 return respuesta.json()
             }
             function obtener_autos(contenido) {
-                console.log("Tengo la lista de los autos!");
+                console.log("Tengo la lista de los autos!")
                 console.log(contenido)
                 
-                const container = document.getElementById("autos");
+                const container = document.getElementById("autos")
                 for (let index = 0; index < contenido.length; index++) {
                     console.log(contenido[index])
                     if (id_pagina_vendedor == contenido[index].vendedor_id) { // Si el id del vendedor es el mismo del vendedor_id muestra los autos correspondientes                   
-                    const item = document.createElement("div");
-                    item.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2"); 
+                    const item = document.createElement("div")
+                    item.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2") 
                     
-                    const tarjeta = document.createElement("a");
-                    tarjeta.setAttribute("class","card text-decoration-none"); 
-                    tarjeta.setAttribute("href", `/comprador/auto?id_auto=${contenido[index].id}&id_comprador=${id_comprador}`);
+                    const tarjeta = document.createElement("a")
+                    tarjeta.setAttribute("class","card text-decoration-none") 
+                    tarjeta.setAttribute("href", `/comprador/auto?id_auto=${contenido[index].id}&id_comprador=${id_comprador}`)
                     
-                    const imagen = document.createElement("img"); 
-                    imagen.setAttribute("class", "img-thumbnail card-img-top"); 
-                    imagen.setAttribute("src", contenido[index].link);
+                    const imagen = document.createElement("img") 
+                    imagen.setAttribute("class", "img-thumbnail card-img-top") 
+                    imagen.setAttribute("src", contenido[index].link)
 
-                    const cuerpo_tarjeta = document.createElement("div"); 
-                    cuerpo_tarjeta.setAttribute("class", "card-body");
+                    const cuerpo_tarjeta = document.createElement("div") 
+                    cuerpo_tarjeta.setAttribute("class", "card-body")
 
-                    cuerpo_tarjeta.append(contenido[index].nombre_auto); 
+                    cuerpo_tarjeta.append(contenido[index].nombre_auto) 
                     tarjeta.append(imagen) 
                     tarjeta.append(cuerpo_tarjeta) 
                     item.append(tarjeta) 
-                    container.append(item);
+                    container.append(item)
                     }
                 }   
             }
@@ -101,8 +101,8 @@
             function obtener_vendedores(contenido) {
                 console.log("Tengo la lista del vendedor")
                 
-                const nombre_del_vendedor = document.getElementById("titulo_usuario"); 
-                nombre_del_vendedor.innerText = `¡Autos de ${contenido.nombre_vendedor}!`;    
+                const nombre_del_vendedor = document.getElementById("titulo_usuario") 
+                nombre_del_vendedor.innerText = `¡Autos de ${contenido.nombre_vendedor}!`    
             }
             fetch(`http://localhost:5000/vendedores/${id_pagina_vendedor}`).then(request_recibida).then(obtener_vendedores).catch(recibir_error)
         </script>
