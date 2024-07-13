@@ -15,8 +15,14 @@
         <div class="container"> 
             <div class="row">
                 <div class="col mb-3">
-                    <h1 id="titulo_usuario">Cargando su usuario</h1>
-                    <a id="boton_homepage_vendedor" class="btn btn-primary" href="/">Volver a la página principal</a> <!--Creamos el boton para volver a la homepage y le damos el id boton_homepage -->
+                    <nav class="bg-dark-subtle p-2 text-dark bg-opacity-10">
+                        <ul class="nav justify-content-end">
+                            <li class="nav-item mx-2">
+                                <a id="boton_homepage_vendedor" class="nav-link btn btn-primary" href="/">Volver a la página principal</a> <!--Creamos el boton para volver a la homepage y le damos el id boton_homepage -->
+                            </li>
+                        </ul>
+                    </nav>
+                    <h1 class="display-3" id="titulo_usuario">Cargando su usuario</h1>
                 </div>
             </div>
         </div>
@@ -44,8 +50,10 @@
             if (id_pagina_vendedor == 'null' || id_pagina_vendedor === '' || id_pagina_vendedor == null) {
                 window.location.href = `/vendedor?id=${id}`;
             }
+            
             // Al ancor Registrar_auto le brindamos el id del vendedor en el link.
             document.getElementById("boton_homepage_vendedor").setAttribute("href", `/vendedor?id=${id}`) // Se para dentro de <a> con id boton_homepage y le brindamos el id del vendedor en el link (atributo)
+            
             function request_recibida(respuesta) {
                 return respuesta.json()
             }
