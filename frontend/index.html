@@ -1,4 +1,4 @@
-<!--Está es la página principal de los autos-->
+<!--Página principal (raiz)-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,20 +12,20 @@
     
     <style>
         img {
-            aspect-ratio: 16/11;
+            aspect-ratio: 3/4;
         }
     </style>
 
 </head>
 <body>
-    <body data-bs-theme="dark"> <!--Hacemos la página modo oscura (por Boostrap)-->
-        <div class="container"> <!--Hacemos una container para mostrar el título (por Boostrap)-->
+    <body data-bs-theme="dark"> <!--Página en modo oscuro (Boostrap)-->
+        <div class="container">
             <div class="row">
                 <div class="col mb-3">
                     <nav class="bg-dark-subtle p-2 text-dark bg-opacity-10">
                         <ul class="nav justify-content-end">
                             <li class="nav-item mx-2">
-                                <a id="boton_crear_comprador" class="nav-link btn btn-danger" href="/crear_comprador">Registrarse como Comprador</a> <!--Creamos el boton de crear_comprador y le damos un id crear_comprador -->                        
+                                <a id="boton_crear_comprador" class="nav-link btn btn-danger" href="/crear_comprador">Registrarse como Comprador</a> <!--Creamos el boton de crear_comprador y le damos un id crear_comprador -->
                             </li>
                             <li class="nav-item mx-2">
                                 <a id="boton_crear_vendedor" class="nav-link btn btn-warning"  href="/crear_vendedor">Registrarse como Vendedor</a> <!--Creamos el boton de crear_vendedor y le damos un id crear_vendedor -->
@@ -36,10 +36,9 @@
                 </div>
             </div>
         </div>
-        <div class="container"> <!--Hacemos una container para mostrar los autos (por Boostrap) (tenemos que editar la función obtener_auto)-->
-            <div class="row g-4" id="autos"> <!--A las filas les damos el id = autos y le damos separación con g-4 -->
-                <!--Item = <div></div>-->
-                <!--Rellenar de cositas-->
+        <div class="container"> 
+            <div class="row g-4" id="autos"> 
+
             </div>
         </div>
 
@@ -49,42 +48,44 @@
         crossorigin="anonymous"></script>
 
         <script>
-            function request_recibida(respuesta) { // Esta función se encarga de recibir la info del request. Tiene que devolver la response.json (pq es json, si fuese texto es response.text)
+            function request_recibida(respuesta) { // Obitiene la información del request y devuelve un json
                 return respuesta.json()
             }
-            function obtener_autos(contenido) { // Esta función se encarga de devolver el cuerpo de la respuesta que quiero (el contenido). En este caso content es la lista de diccionarios porque el endpoint de /characters devuelve la lista de diccionarios de los PJs
-                console.log("Tengo la lista de los autos!");
+            function obtener_autos(contenido) { // Obitiene y muestra todos los autos
+                console.log("Tengo la lista de los autos!")
                 
-                const container = document.getElementById("autos"); // Obtenemos dentro del container en la clas row g-4
+                const container = document.getElementById("autos") // Creamos la constante container que es el div con id "autos"
                 for (let index = 0; index < contenido.length; index++) {
-                    const item = document.createElement("div"); // Creamos un objeto de tipo div (separador pero sin semantica)
-                    item.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2"); // Esto hace que se vean las columnas de los autos de cierta forma
+                    const item = document.createElement("div")  // Creamos la constante item que es un div
+                    item.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2")
                     
-                    // Para poder redireccionar al usuario cuando haga click a un personaje a la info del mismo:
-                    const tarjeta = document.createElement("a"); // Creamos la constante tarjeta que es un elemento de tipo a (ancor). Es como si fuera un link.
-                    tarjeta.setAttribute("class","card text-decoration-none"); // Le damos la clase de tipo card (como atributo) y hacemos que no lo subraye por ser ancor.
-                    tarjeta.setAttribute("href", `/auto?id=${contenido[index].id}`); // Le damos el atributo href que redirecciona a la página /character con el id correspondiente.
+                    // Generamos la tarjeta del auto (es un link)
+                    const tarjeta = document.createElement("a") // Creamos la constante tarjeta que es un ancor
+                    tarjeta.setAttribute("class","card text-decoration-none") // Otorgamos el atributo class de tipo card y evitamos que subraye por ser ancor
+                    tarjeta.setAttribute("href", `/auto?id=${contenido[index].id}`) // Otorgamos el atributo href redireccionado a la página del auto (con su id en el link)
                     
-                    // Para mostrar la imagen del personaje:
-                    const imagen = document.createElement("img"); // Creamos la constante imagen que es un elemento de tipo img.
-                    imagen.setAttribute("class", "img-thumbnail card-img-top"); // Esta clase es de boostrap
-                    imagen.setAttribute("src", contenido[index].link); // Le damos el atributo src que logra obtener el link de la imagen
+                    // Generamos la imagen del auto
+                    const imagen = document.createElement("img") // Creamos la constante imagen que es un img
+                    imagen.setAttribute("class", "img-thumbnail card-img-top")
+                    imagen.setAttribute("src", contenido[index].link) // Otorgamos el atributo src que obtine el link de la imagen
 
-                    // Para mostrar el texto debajo de la tarjeta (es el cuerpo de la misma)
-                    const cuerpo_tarjeta = document.createElement("div"); // Creamos la constante tarjeta_cuerpo que es un elemento de tipo div.
-                    cuerpo_tarjeta.setAttribute("class", "card-body"); // Le damos la clase de tipo card-body
+                    // Generamos el cuerpo de la tarjeta
+                    const cuerpo_tarjeta = document.createElement("div") // Creamos la constante cuerpo_tarjeta que es un div
+                    cuerpo_tarjeta.setAttribute("class", "card-body") // Otorgamos el atributo class de tipo card-body
 
-                    cuerpo_tarjeta.append(contenido[index].nombre_auto); // Appendiamos el nombre del personaje a card_body.
-                    tarjeta.append(imagen) // Appendiamos el elemento imagen a tarjeta.
-                    tarjeta.append(cuerpo_tarjeta) // Appendiamos el elemento cuerpot_tarjeta a tarjeta.
-                    item.append(tarjeta) // Appendiamos el elemento de terjeta a item                
-                    container.append(item); // Appendiamos el item dentro del container        
+                    // Unimos todo lo anterior al container
+                    cuerpo_tarjeta.append(contenido[index].nombre_auto) // Appendiamos el nombre del auto en cuerpo_tarjeta
+                    tarjeta.append(imagen) // Appendiamos imagen en tarjeta
+                    tarjeta.append(cuerpo_tarjeta) // Appendiamos cuerpo_tarjeta en tarjeta
+                    item.append(tarjeta) // Appendiamos tarjeta en item        
+                    container.append(item) // Appendiamos item en container        
                 }   
             }
-            function recibir_error(error) { // Esta función se encarga de devolver un error si la request falla por algun motivo.
+            function recibir_error(error) { // Obtiene y devuelve un error si la request falla
                 console.log("ERROR")
                 console.log(error)
             }
+            // Vinculamos la página con el endpoint mostrar_autos()
             fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_autos).catch(recibir_error)
         </script>
 </body>

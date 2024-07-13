@@ -19,19 +19,19 @@
 
 </head>
 <body>
-    <body data-bs-theme="dark"> <!--Hacemos la página modo oscura)-->
-        <div class="container my-4"> <!--Creamos un conteiner que muestra toda la página de forma estática (a difrencia de la de /frontend). margen superior con mt-4-->
+    <body data-bs-theme="dark">
+        <div class="container my-4">
             <div class="row">
-                <div class="col-12 col-md-10 mx-auto"> <!--A las columnas le damos ese atributo para que las muestre bien dependiendo del tamaño de la página y para que se centre uso mx-auto-->
+                <div class="col-12 col-md-10 mx-auto">
                     <div class="card">
-                        <a id="boton_hompage_comprador" class="btn btn-primary" href="/">Volver a la página principal </a> <!--Boton que redirecciona a la homepage -->
+                        <a id="boton_hompage_comprador" class="btn btn-primary" href="/">Volver a la página principal </a> <!--Ancor que redirecciona a la raiz -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
-                                    <img src="" alt="" id="imagen" class="w-100"> <!--Le damos el id image a a img y la clase w-100 para evitar que se bugue el texto con la imagen-->
+                                    <img src="" alt="" id="imagen" class="w-100">
                                 </div>
                                 <div class="col-6">
-                                    <h2 id="titulo_auto"> Cargando... </h2> <!--Le damos el id name a h2-->
+                                    <h2 id="titulo_auto"> Cargando... </h2>
                                     <h5 id="año"> Cargando... </h5>
                                     <h5 id="tipo_caja_manual"> Cargando... </h5>
                                     <h5 id="tipo_caja_automatica"> Cargando...</h5>
@@ -60,11 +60,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         
-        // Para poder mostrar la info de cada personaje cuando se le haga click necesito extraer la info del id de ese PJ:
-        const parametros = new URLSearchParams(window.location.search) // Creamos la constante params que obtiene todos los parametros del url
-        const id = parametros.get("id") // Creamos la constante id que obtiene todos los paramaeteros de la constante params que sea id
-        console.log(id)
+        // Obtenemos el id del auto por el url
+        const parametros = new URLSearchParams(window.location.search) // Creamos la constante parametros que obtiene todos los parametros del url
+        const id = parametros.get("id") // Creamos la constante id que obtiene todos los parametros de la constante params que sea id
         
+        // Verificamos que el id exista, de no existir redirecciona a la raiz
         if (id == 'null' || id === '' || id == null) { // Si el id no existe (osea es null) entonces redirecciona a la homepage ó si id= es un string vacio
             window.location.href = "/"
         }
@@ -73,35 +73,35 @@
             return respuesta.json()
         }
 
-        function obtener_auto(contenido) { // Función que brinda la respuesta que queremos del endpoint
+        function obtener_auto(contenido) { // Obtiene y muestra toda la información de cierto auto por id
             console.log(contenido)
 
-            const nombre_auto = document.getElementById("titulo_auto") // Creamos la constante nombre que se para dentro de <h2> por tener el id titulo_auto.
-            nombre_auto.innerText = contenido.nombre_auto // La constante nombre, sobreescribe el contenido del json con clave nombre.
+            const nombre_auto = document.getElementById("titulo_auto") // Creamos la constante nombre_auto que es el h5 con id titulo_auto (misma forma menos para imagen)
+            nombre_auto.innerText = contenido.nombre_auto 
 
-            const imagen = document.getElementById("imagen") // Creamos la constante imagen que se para dentro de la etiqueta img por tener el id imagen.
-            imagen.setAttribute("src", contenido.link) // Le asignamos el atributo src con el valor que tenga el json con clave link.
+            const imagen = document.getElementById("imagen") // Creamos la constante nombre_auto que es el h5 con id titulo_auto (misma forma menos para imagen)
+            imagen.setAttribute("src", contenido.link) 
 
             const aniio = document.getElementById("año")
             aniio.innerText = `Año: ${contenido.anio}`
             
-            const caja_man = document.getElementById("tipo_caja_manual") // Creamos la cte caja_man que se para dentro del h5 con id = tipo_caja_manual
-            const caja_auto = document.getElementById("tipo_caja_automatica") // idem pero con otro nombre
+            const caja_man = document.getElementById("tipo_caja_manual") 
+            const caja_auto = document.getElementById("tipo_caja_automatica") 
             console.log(contenido.caja_manual)
-            if (contenido.caja_manual === true) {  // Si el json en caja_manual === true
-                caja_man.innerText = "Caja manual" // Sobrescribe el h5 con id = "Caja manual" que decia Cargando... por Caja Manual 
-                caja_auto.innerText = null // Sobrescribe el h5 Caja automatica que decia Cargando... por Nada 
+            if (contenido.caja_manual === true) {  // Si caja manual es true entonces escribe en la constante caja manual "Caja manual"
+                caja_man.innerText = "Caja manual"
+                caja_auto.innerText = null 
             }
-            else {  
-                caja_man.innerText = null // Sobrescribe el h5 Caja manual que decia Cargando... por Nada
-                caja_auto.innerText = "Caja automatica" // Sobrescribe el h5 con id = "Caja automatica" que decia Cargando... por Caja automatica 
+            else { // De no serlo escribe en la constante caja automatica "Caja automatica"
+                caja_man.innerText = null 
+                caja_auto.innerText = "Caja automatica"
             }
 
-            const numero_asientos = document.getElementById("cantidad_asientos") // Creamos la cte numero_asientos que  se para dentro del h5 con id = cantidad-asientos
-            numero_asientos.innerText = `Cantidad de asientos: ${contenido.cant_asientos}`// Dentro de la cte numero_asientos imprime el contendio del json en cant_asiento
+            const numero_asientos = document.getElementById("cantidad_asientos")
+            numero_asientos.innerText = `Cantidad de asientos: ${contenido.cant_asientos}`
 
-            const color = document.getElementById("tipo_color") // idem pero con otro nombre
-            color.innerText = `Color: ${contenido.color}` // idem pero con otro nombre
+            const color = document.getElementById("tipo_color") 
+            color.innerText = `Color: ${contenido.color}`
 
             const kilometro = document.getElementById("km")
             kilometro.innerText = `Kilometros: ${contenido.kilometros}`
@@ -118,14 +118,14 @@
             const ubicacion = document.getElementById("la_ubicacion")
             ubicacion.innerText = `Ubicación: ${contenido.ubicacion}`
             
-            const id_del_propietario = contenido.vendedor_id //Obtenemos el id del vendedor
-            console.log(id_del_propietario)
-            function obtener_propietario(contenido) {
+            const id_del_propietario = contenido.vendedor_id // Obtenemos el id del propietario del auto
+            
+            function obtener_propietario(contenido) { // Obtiene y muestra el nombre del propietario en lugar de su id
                 console.log("Tengo las caractersticas del propietario del auto",contenido)
-                const id_del_vendedor = document.getElementById("id_vendedor") // Creamos la cte id_del_vendedor que se para dentro del h5 con id = id_vendedor
-                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}">${contenido.nombre_vendedor}` // Redireccionamos a la página del propietario del auto con query params
+                const id_del_vendedor = document.getElementById("id_vendedor")
+                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}">${contenido.nombre_vendedor}` // Redireccionamos a la página del propietario del auto
             }
-            // Dentro la función obtener_auto con el endpoit de un vendedor que varía por id
+            // // Vinculamos la funcion obtener_auto con el endpoint de mostrar_vendedor() (usando la forma abreviada para el response y el error)
             fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))  // Hacemos uso de la forma rápida para hacer .then de response y .catch de error porque no sabemos si lee dichas funciones este fecth            
 
         }
@@ -133,7 +133,7 @@
             console.log("ERROR", error)
         }
 
-        // Vinculamos esta la pagina del auto con el endpoint de mostrar un auto
+        // Vinculamos la pagina con el endpoint de mostrar_auto()
         fetch(`http://localhost:5000/autos/${id}`).then(response_recibida).then(obtener_auto).catch(manejar_error)
 
     </script>
