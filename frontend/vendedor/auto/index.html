@@ -13,7 +13,7 @@
     <style>
         img {
             background-color: dimgray;
-            aspect-ratio: 4/3;
+            aspect-ratio: 4/3
         }
     </style>
 
@@ -62,16 +62,16 @@
     <script>
         
         // Para poder mostrar la info de cada auto variando por vendedor
-        const parametros = new URLSearchParams(window.location.search);
-        const id = parametros.get("id");
-        const id_auto = parametros.get("id_auto");
+        const parametros = new URLSearchParams(window.location.search)
+        const id = parametros.get("id")
+        const id_auto = parametros.get("id_auto")
         console.log(id_auto)
 
         if (id === null || id === '') {
-            window.location.href = "/"; // Si el id  no existe entonces redirecciona a la homepage
+            window.location.href = "/" // Si el id  no existe entonces redirecciona a la homepage
         }
         if (id_auto === null || id_auto === '') { 
-            window.location.href = `/vendedor?id=${id}`; // Si el id_auto no existe entonces redirecciona a la homepage del vendedor
+            window.location.href = `/vendedor?id=${id}` // Si el id_auto no existe entonces redirecciona a la homepage del vendedor
         }
         
         // Al ancor "Volver a la página principal" redireccionamos a la página del vendedor por su id.
@@ -83,17 +83,17 @@
         function obtener_auto(contenido) {
             console.log(contenido)
 
-            const nombre_del_auto = document.getElementById("titulo_auto"); 
-            nombre_del_auto.innerText = contenido.nombre_auto; 
+            const nombre_del_auto = document.getElementById("titulo_auto") 
+            nombre_del_auto.innerText = contenido.nombre_auto 
 
-            const imagen = document.getElementById("imagen"); 
-            imagen.setAttribute("src", contenido.link); 
+            const imagen = document.getElementById("imagen") 
+            imagen.setAttribute("src", contenido.link) 
 
-            const aniio = document.getElementById("año");
+            const aniio = document.getElementById("año")
             aniio.innerText = `Año: ${contenido.anio}`
              
-            const caja_man = document.getElementById("tipo_caja_manual"); 
-            const caja_auto = document.getElementById("tipo_caja_automatica"); 
+            const caja_man = document.getElementById("tipo_caja_manual") 
+            const caja_auto = document.getElementById("tipo_caja_automatica") 
             console.log(contenido.caja_manual)
             if (contenido.caja_manual === true) { 
                 caja_man.innerText = "Caja manual" 
@@ -104,25 +104,25 @@
                 caja_auto.innerText = "Caja automatica" 
             }
 
-            const numero_asientos = document.getElementById("cantidad_asientos"); 
+            const numero_asientos = document.getElementById("cantidad_asientos") 
             numero_asientos.innerText = `Cantidad de asientos: ${contenido.cant_asientos}`
 
-            const color = document.getElementById("tipo_color"); 
+            const color = document.getElementById("tipo_color") 
             color.innerText = `Color: ${contenido.color}` 
 
-            const kilometro = document.getElementById("km");
+            const kilometro = document.getElementById("km")
             kilometro.innerText = `Kilometros: ${contenido.kilometros}`
 
-            const nombre_marca = document.getElementById("tipo_marca");
+            const nombre_marca = document.getElementById("tipo_marca")
             nombre_marca.innerText = `Marca: ${contenido.marca}`
 
-            const coste_monetario = document.getElementById("el_precio");
+            const coste_monetario = document.getElementById("el_precio")
             coste_monetario.innerText = `Precio: ${contenido.precio}`
 
-            const tipo_de_baul = document.getElementById("espacio_baul");
+            const tipo_de_baul = document.getElementById("espacio_baul")
             tipo_de_baul.innerText = `Tipo de baúl: ${contenido.tipo_baul}`
 
-            const ubicacion = document.getElementById("la_ubicacion");
+            const ubicacion = document.getElementById("la_ubicacion")
             ubicacion.innerText = `Ubicación: ${contenido.ubicacion}`
             
             const id_del_propietario = contenido.vendedor_id
@@ -139,13 +139,13 @@
                 const boton_eliminar = document.createElement("button")
                 boton_eliminar.setAttribute("class", "btn btn-danger")
                 boton_eliminar.setAttribute("onclick", "eliminar_auto()")
-                boton_eliminar.setAttribute("style", "margin-right: auto;")
+                boton_eliminar.setAttribute("style", "margin-right: auto")
                 boton_eliminar.append("Eliminar")
 
                 const boton_editar = document.createElement("a")
                 boton_editar.setAttribute("class", "btn btn-warning")
                 boton_editar.setAttribute("href", `/vendedor/auto/editar?id_auto=${id_auto}&id=${id}`)
-                boton_editar.setAttribute("style", "margin-left: auto;")
+                boton_editar.setAttribute("style", "margin-left: auto")
                 boton_editar.append("Editar")
                 
                 lugar_de_botones.append(boton_eliminar)
@@ -155,8 +155,8 @@
 
             function obtener_propietario(contenido) {
                 console.log("Tengo las caractersticas del propietario del auto",contenido)
-                const id_del_vendedor = document.getElementById("id_vendedor"); 
-                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}&id=${id}">${contenido.nombre_vendedor}`; // Redireccionamos a la página del vendedor de ese auto con dicho id y con el id del usuario logeado.
+                const id_del_vendedor = document.getElementById("id_vendedor") 
+                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}&id=${id}">${contenido.nombre_vendedor}` // Redireccionamos a la página del vendedor de ese auto con dicho id y con el id del usuario logeado.
             }
             // Dentro la función obtener_auto con el endpoit de un vendedor que varía por id
             fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))  // Hacemos uso de la forma rápida para hacer .then de response y .catch de error porque no sabemos si lee dichas funciones este fecth
@@ -172,14 +172,14 @@
             const confirmacion = confirm(`¿Esta seguro de que queres eliminar la publicación de id ${id_auto}?`)
             console.log(confirmacion)
             if (!confirmacion) { // Si la confirmación es false entonces termina la función 
-            return;
+            return
         }
         
         function borrar_response(contenido) { //Esta funcion se encarga de que la base datos elimine dicho auto y nos avise si lo hizo
             if (contenido.Success === true) {
                 console.log(contenido)
                 alert("La publicación se ha eliminado con exito")
-                window.location.href = `/vendedor?id=${id}`; // Redirecciona a la homepage del vendedor
+                window.location.href = `/vendedor?id=${id}` // Redirecciona a la homepage del vendedor
             }
             else {
                 alert("Un error a ocurrido. Intentelo de nuevo")

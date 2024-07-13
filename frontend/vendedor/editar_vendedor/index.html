@@ -23,8 +23,8 @@
                                 <input type="text" class="form-control" id="nombre_vendedor" name="nombre_vendedor" placeholder="Pepe" required>
                             </div>
                             <div class="d-flex">
-                                <button type="submit" class="btn btn-success" style="margin-right: auto;">Aplicar</button>
-                                <a id="boton_cancelar" class="btn btn-danger" href="" style="margin-left: auto;">Cancelar</a>
+                                <button type="submit" class="btn btn-success" style="margin-right: auto">Aplicar</button>
+                                <a id="boton_cancelar" class="btn btn-danger" href="" style="margin-left: auto">Cancelar</a>
                             </div>
                             </form>
                         </div>
@@ -36,11 +36,11 @@
     <script>
         // Necesitamos obtener los datos cargados de cada input del form 
         // Extraemos el id de ese vendedor:
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get("id");
+        const params = new URLSearchParams(window.location.search)
+        const id = params.get("id")
 
         if (id == 'null' || id === '' || id == null) {
-            window.location.href = "/"; // Si el id  no existe entonces redirecciona a la homepage
+            window.location.href = "/" // Si el id  no existe entonces redirecciona a la homepage
         }
 
         // Actualizamos dinámicamente la redirección del ancor cancelar

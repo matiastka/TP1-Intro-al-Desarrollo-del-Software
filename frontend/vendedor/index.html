@@ -11,7 +11,7 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         img {
-            aspect-ratio: 3/4;
+            aspect-ratio: 3/4
         }
     </style>
 </head>
@@ -48,12 +48,12 @@
 
         <script>
             // Obtenemos el id del vendedor loggeado:
-            const parametros = new URLSearchParams(window.location.search);
-            const id = parametros.get("id");
+            const parametros = new URLSearchParams(window.location.search)
+            const id = parametros.get("id")
             console.log(id)
             
             if (id == 'null' || id === '' || id == null) {
-                window.location.href = "/";
+                window.location.href = "/"
             }
             
             // Al ancor Registrar_auto le brindamos el id del vendedor en el link.
@@ -65,29 +65,29 @@
                 return respuesta.json()
             }
             function obtener_autos(contenido) { // Obtenemos y mostramos todos los autos dinámicamente en el div con id "autos" 
-                console.log("Tengo la lista de los autos!");
+                console.log("Tengo la lista de los autos!")
 
-                const container = document.getElementById("autos");
+                const container = document.getElementById("autos")
                 for (let index = 0; index < contenido.length; index++) {
-                    const item = document.createElement("div");
-                    item.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2"); 
+                    const item = document.createElement("div")
+                    item.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2") 
                     
-                    const tarjeta = document.createElement("a");
-                    tarjeta.setAttribute("class","card text-decoration-none"); 
-                    tarjeta.setAttribute("href", `/vendedor/auto?id_auto=${contenido[index].id}&id=${id}`);
+                    const tarjeta = document.createElement("a")
+                    tarjeta.setAttribute("class","card text-decoration-none") 
+                    tarjeta.setAttribute("href", `/vendedor/auto?id_auto=${contenido[index].id}&id=${id}`)
                     
-                    const imagen = document.createElement("img"); 
-                    imagen.setAttribute("class", "img-thumbnail card-img-top"); 
-                    imagen.setAttribute("src", contenido[index].link);
+                    const imagen = document.createElement("img") 
+                    imagen.setAttribute("class", "img-thumbnail card-img-top") 
+                    imagen.setAttribute("src", contenido[index].link)
 
-                    const cuerpo_tarjeta = document.createElement("div"); 
-                    cuerpo_tarjeta.setAttribute("class", "card-body");
+                    const cuerpo_tarjeta = document.createElement("div") 
+                    cuerpo_tarjeta.setAttribute("class", "card-body")
 
-                    cuerpo_tarjeta.append(contenido[index].nombre_auto); 
+                    cuerpo_tarjeta.append(contenido[index].nombre_auto) 
                     tarjeta.append(imagen) 
                     tarjeta.append(cuerpo_tarjeta) 
                     item.append(tarjeta) 
-                    container.append(item);
+                    container.append(item)
                 }   
             }
             function recibir_error(error) {
@@ -99,8 +99,8 @@
             function obtener_vendedores(contenido) { // Obtenemos el nombre del usuario y lo escribimos en el h1 con id "titulo_usuario"
                 console.log("Tengo la lista del vendedor")
                 
-                const nombre_del_vendedor = document.getElementById("titulo_usuario"); 
-                nombre_del_vendedor.innerText = `¡Bienvenido/a ${contenido.nombre_vendedor}!`;    
+                const nombre_del_vendedor = document.getElementById("titulo_usuario") 
+                nombre_del_vendedor.innerText = `¡Bienvenido/a ${contenido.nombre_vendedor}!`    
             }
             fetch(`http://localhost:5000/vendedores/${id}`).then(request_recibida).then(obtener_vendedores).catch(recibir_error)
         </script>
