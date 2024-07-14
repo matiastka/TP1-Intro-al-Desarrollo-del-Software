@@ -14,7 +14,7 @@
 	<li>PSQL</li>
 </ul>
 </div>
-<h2>Instalación</h2>
+<h2>Instalar</h2>
 <div>
 	
 	cd TP1-Intro-al-Desarrollo-del-Software/
@@ -26,7 +26,7 @@
     pip install psycopg2
      
 </div>
-<h2>Como correr la pagina web</h2>
+<h2>Ejecutar</h2>
 <p>Primero tienes que descargar el repostorio, despues tienes que levantar un servidor para el backend <b>(puedes usar python o flask)</b> y otro para el frontend.</p>
 <h3>Backend</h3>
 <div>
