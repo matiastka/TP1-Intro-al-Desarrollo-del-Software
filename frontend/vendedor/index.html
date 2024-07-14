@@ -1,4 +1,4 @@
-<!--Está es la página principal de los autos (Homepage) con un vendedor loggeado-->
+<!--Página principal de los autos con un vendedor loggeado-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,7 +11,7 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         img {
-            aspect-ratio: 3/4
+            aspect-ratio: 3/4;
         }
     </style>
 </head>
@@ -23,10 +23,10 @@
                     <nav class="bg-dark-subtle p-2 text-dark bg-opacity-10">
                         <ul class="nav justify-content-end">
                             <li class="nav-item mx-2">
-                                <a id="boton_crear_auto" class="nav-link btn btn-success" href="crear_auto">Registrar Auto</a> <!--Creamos el boton Registrar Auto, con id boton_crear_auto -->
+                                <a id="boton_crear_auto" class="nav-link btn btn-success" href="crear_auto">Registrar Auto</a>
                             </li>
                             <li class="nav-item mx-2">
-                                <a id="boton_editar_vendedor" class="nav-link btn btn-warning" href="editar_vendedor">Modificar perfil</a> <!--Creamos el boton Modificar perfil, con id boton_editar_vendedor -->
+                                <a id="boton_editar_vendedor" class="nav-link btn btn-warning" href="editar_vendedor">Modificar perfil</a>
                             </li>
                         </ul>
                     </nav>
@@ -47,24 +47,24 @@
         crossorigin="anonymous"></script>
 
         <script>
-            // Obtenemos el id del vendedor loggeado:
+            // Obtenemos el id del vendedor
             const parametros = new URLSearchParams(window.location.search)
             const id = parametros.get("id")
-            console.log(id)
             
+            // Verificamos que el id del vendedor exista, de no existir redirecciona a la raiz
             if (id == 'null' || id === '' || id == null) {
                 window.location.href = "/"
             }
             
-            // Al ancor Registrar_auto le brindamos el id del vendedor en el link.
+            // Al ancor Registrar_auto le otorgamos el id del vendedor en el link
             document.getElementById("boton_crear_auto").setAttribute("href", `/vendedor/crear_auto?id=${id}`)
-            // Al ancor Modificar perfil le brindamos el id del vendedor en el link
+            // Al ancor Modificar perfil le otorgamos el id del vendedor en el link
             document.getElementById("boton_editar_vendedor").setAttribute("href", `/vendedor/editar_vendedor?id=${id}`) 
             
             function request_recibida(respuesta) {
                 return respuesta.json()
             }
-            function obtener_autos(contenido) { // Obtenemos y mostramos todos los autos dinámicamente en el div con id "autos" 
+            function obtener_autos(contenido) { // Obtenemos y mostramos todos los autos
                 console.log("Tengo la lista de los autos!")
 
                 const container = document.getElementById("autos")
@@ -94,6 +94,7 @@
                 console.log("ERROR")
                 console.log(error)
             }
+            // Vinculamos la página con el endpoint mostrar_autos()
             fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_autos).catch(recibir_error)
 
             function obtener_vendedores(contenido) { // Obtenemos el nombre del usuario y lo escribimos en el h1 con id "titulo_usuario"
@@ -102,6 +103,7 @@
                 const nombre_del_vendedor = document.getElementById("titulo_usuario") 
                 nombre_del_vendedor.innerText = `¡Bienvenido/a ${contenido.nombre_vendedor}!`    
             }
+            // Vinculamos la página con el endpoint mostrar_vendedor()
             fetch(`http://localhost:5000/vendedores/${id}`).then(request_recibida).then(obtener_vendedores).catch(recibir_error)
         </script>
 </body>

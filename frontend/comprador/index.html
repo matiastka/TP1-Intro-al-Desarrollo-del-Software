@@ -1,4 +1,4 @@
-<!--Está es la página principal de los autos con un comprador loggeado-->
+<!--Página principal de los autos. Con un comprador loggeado-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,10 +25,10 @@
                     <nav class="bg-dark-subtle p-2 text-dark bg-opacity-10">
                         <ul class="nav justify-content-end">
                             <li class="nav-item mx-2">
-                                <a id="boton_añadir_fondos" class="nav-link btn btn-success" href="agregar_fondos">Ingresar Fondos </a> <!--Creamos el boton Ingresar fondos para agregar fondos al perfil, con id boton_añadir_fondos -->
+                                <a id="boton_añadir_fondos" class="nav-link btn btn-success" href="agregar_fondos">Ingresar Fondos </a>
                             </li>
                             <li class="nav-item mx-2">
-                                <a id="boton_editar_comprador" class="nav-link btn btn-warning" href="editar_comprador">Modificar perfil</a> <!--Creamos el boton Editar para editar el perfil, con id boton_editar_comprador -->
+                                <a id="boton_editar_comprador" class="nav-link btn btn-warning" href="editar_comprador">Modificar perfil</a>
                             </li>
                         </ul>
                     </nav>
@@ -52,19 +52,26 @@
         crossorigin="anonymous"></script>
 
         <script>
+
+            // Obtenemos el id del comprador por el url
             const parametros = new URLSearchParams(window.location.search)
             const id_comprador = parametros.get("id_comprador")
-            console.log(id_comprador)
             
+            // Verificamos que el id exista, de no existir redirecciona a la raiz
             if (id_comprador == 'null' || id_comprador === '' || id_comprador == null) {
                 window.location.href = "/"
             }
+
+            // Al ancor Ingresar Fondos le otorgamos el id del comprador en la redirección
             document.getElementById("boton_añadir_fondos").setAttribute("href", `/comprador/agregar_fondos?id_comprador=${id_comprador}`) // Se para dentro de <a> con id boton_añadir_fondos y redireccionamos con el id_comprador.
+            
+            // Al ancor Modificar perfil le otorgamos el id del comprador en la redirección
             document.getElementById("boton_editar_comprador").setAttribute("href", `/comprador/editar_comprador?id_comprador=${id_comprador}`) // Se para dentro de <a> con id boton_editar_comprador y redireccionamos con el id_comprador.
+            
             function request_recibida(respuesta) {
                 return respuesta.json()
             }
-            function obtener_autos(contenido) {
+            function obtener_autos(contenido) { // Obtiene y muestra todos los autos
                 console.log("Tengo la lista de los autos!")
 
                 const container = document.getElementById("autos")
@@ -94,6 +101,7 @@
                 console.log("ERROR")
                 console.log(error)
             }
+            // Vinculamos la página con el endpoint mostrar_autos()
             fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_autos).catch(recibir_error)
 
             function obtener_compradores(contenido) {
@@ -105,6 +113,7 @@
                 const mostrar_saldo = document.getElementById("mostrar_plata") 
                 mostrar_saldo.innerText = `Saldo actual de la cartera: $${contenido.plata}` 
             }
+            // Vinculamos la página con el endpoint mostrar_comprador()
             fetch(`http://localhost:5000/compradores/${id_comprador}`).then(request_recibida).then(obtener_compradores).catch(recibir_error)
         </script>
 </body>

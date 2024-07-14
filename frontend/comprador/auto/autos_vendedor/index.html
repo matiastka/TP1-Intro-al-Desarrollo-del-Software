@@ -1,4 +1,4 @@
-<!--Está es la página principal de los autos (Homepage) de un vendedor. Con un comprador loggeado-->
+<!--Página principal de los autos de un vendedor. Con un comprador loggeado-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,7 +25,7 @@
                     <nav class="bg-dark-subtle p-2 text-dark bg-opacity-10">
                         <ul class="nav justify-content-end my-2">
                             <li class="nav-item mx-2">
-                                <a id="boton_homepage_comprador" class="nav-link btn btn-primary" href="/">Volver a la página principal</a> <!--Creamos el boton para volver a la homepage de los autos con el comprador logeado y le damos el id boton_homepage -->
+                                <a id="boton_homepage_comprador" class="nav-link btn btn-primary" href="/">Volver a la página principal</a>
                             </li>
                         </nav>
                     <h1 class="display-3" id="titulo_usuario">Cargando su usuario</h1>
@@ -43,33 +43,35 @@
         crossorigin="anonymous"></script>
 
         <script>
+
+            // Obtenemos el id del comprador y el id del propietario de los autos por el url
             const parametros = new URLSearchParams(window.location.search)
             const id_comprador = parametros.get("id_comprador")
             const id_pagina_vendedor = parametros.get("id_pagina_vendedor")
-            console.log(id_comprador)
-            console.log(id_pagina_vendedor)
             
+            // Verificamos que el id_comprador exista, de no existir redirecciona a la raiz
             if (id_comprador == 'null' || id_comprador === '' || id_comprador == null) {
                 window.location.href = "/"
             }
-
+            // Verificamos que el id_pagina_vendedor exista, de no existir redirecciona a la pagina principal del comprador
             if (id_pagina_vendedor == 'null' || id_pagina_vendedor === '' || id_pagina_vendedor == null) {
                 window.location.href = `/comprador?id_comprador=${id_comprador}`
             }
             
-            document.getElementById("boton_homepage_comprador").setAttribute("href", `/comprador?id_comprador=${id_comprador}`) // Se para dentro de <a> con id boton_homepage y le brindamos el id del comprador en el link 
+            // Al ancor de volver a la página principal le otorgamos el id del comprador en la redirección
+            document.getElementById("boton_homepage_comprador").setAttribute("href", `/comprador?id_comprador=${id_comprador}`)
             
             function request_recibida(respuesta) {
                 return respuesta.json()
             }
-            function obtener_autos(contenido) {
+            function obtener_autos(contenido) { // Obitiene y muestra todos los autos de un propietario
                 console.log("Tengo la lista de los autos!")
                 console.log(contenido)
                 
                 const container = document.getElementById("autos")
                 for (let index = 0; index < contenido.length; index++) {
                     console.log(contenido[index])
-                    if (id_pagina_vendedor == contenido[index].vendedor_id) { // Si el id del vendedor es el mismo del vendedor_id muestra los autos correspondientes                   
+                    if (id_pagina_vendedor == contenido[index].vendedor_id) { // Si id_pagina_vendedor es igual al id del vendedor => Muestra sus autos
                     const item = document.createElement("div")
                     item.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2") 
                     
@@ -96,14 +98,16 @@
                 console.log("ERROR")
                 console.log(error)
             }
+            // Vinculamos la página con el endpoint de mostrar_autos()
             fetch("http://localhost:5000/autos/").then(request_recibida).then(obtener_autos).catch(recibir_error)
 
-            function obtener_vendedores(contenido) {
+            function obtener_vendedores(contenido) { // Obtenemos el nombre del usuario y lo escribimos en el h1 con id "titulo_usuario"
                 console.log("Tengo la lista del vendedor")
                 
                 const nombre_del_vendedor = document.getElementById("titulo_usuario") 
                 nombre_del_vendedor.innerText = `¡Autos de ${contenido.nombre_vendedor}!`    
             }
+            // Vinculamos la página con el endpoint de mostrar_vendedor()
             fetch(`http://localhost:5000/vendedores/${id_pagina_vendedor}`).then(request_recibida).then(obtener_vendedores).catch(recibir_error)
         </script>
 </body>
