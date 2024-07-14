@@ -234,7 +234,7 @@ def mostrar_comprador(id_comprador):
     except: 
         return jsonify({"mensaje":"El comprador que buscaste no existe"})
 
-@app.route('/compradores/<id_comprador>', methods=['PUT']) #Endpoint para editar el perfil de un comprador
+@app.route('/compradores/<id_comprador>', methods=['PUT']) #Endpoint para editar un comprador
 def editar_comprador(id_comprador):
     try:
         data = request.json 
@@ -248,7 +248,7 @@ def editar_comprador(id_comprador):
         print('Error', error)
         return jsonify({'mensaje': 'Error al editar el comprador'}), 500
 
-@app.route('/insertar_fondos/<id_comprador>', methods=['PUT'])
+@app.route('/insertar_fondos/<id_comprador>', methods=['PUT']) #Endpoint para 'agregar' los fondos de un comprador con cierto id
 def agregar_fondo(id_comprador):
     try:
         data = request.json 
@@ -261,7 +261,7 @@ def agregar_fondo(id_comprador):
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
 
-@app.route('/restar_fondos/<id_comprador>', methods=['PUT'])
+@app.route('/restar_fondos/<id_comprador>', methods=['PUT']) #Endpoint hacer restar los fondos de un comprador con cierto id
 def restar_fondo(id_comprador):
     try:
         data = request.json 
@@ -274,10 +274,10 @@ def restar_fondo(id_comprador):
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
     
-@app.route('/compradores', methods=['POST'])
+@app.route('/compradores', methods=['POST']) #Endpoint para agregar un comprador con cierto id
 def agregar_comprador():
     try:
-        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        data = request.json 
         nuevo_nombre = data.get('nombre_comprador') 
         nueva_plata = data.get('plata')
         nuevo_comprador = Compradores(
