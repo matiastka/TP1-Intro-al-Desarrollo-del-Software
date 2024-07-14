@@ -22,10 +22,10 @@
 	cd TP1-Intro-al-Desarrollo-del-Software/
  	source venv/bin/activate
   	cd backend/
-<p>Con Python:</p>
+<p>Si es con Python:</p>
 
 	python3 main.py
-<p>O con Flask:</p>
+<p>Si es con Flask:</p>
 
 	flask --app main --debug run -h localhost -p 5000
 </div>
