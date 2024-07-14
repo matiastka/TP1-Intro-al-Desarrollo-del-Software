@@ -1,4 +1,4 @@
-<!--Esta es la página para crear un comprador-->
+<!--Página para crear un comprador-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -17,7 +17,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Registrarse como comprador</h2> 
-                        <form onsubmit="crear_comprador(event)"> <!--La función crear_comprador(event) esta vinculada con el script-->
+                        <form onsubmit="crear_comprador(event)">
                             <div class="mb-3"> <!--Campo del nombre del comprador-->
                                 <label for="nombre_comprador" class="form-label">Ingrese su nombre</label>
                                 <input type="text" class="form-control" id="nombre_comprador" name="nombre_comprador" placeholder="Juan Quique" required>
@@ -42,28 +42,24 @@
             console.log("ERROR", error)
         }
  
-        // Para hacer funcionar el botón Crear del formulario, vinculamos el mismo a la función crear_comprador(event).
-        function crear_comprador(event) {
+        function crear_comprador(event) { // Obtiene los datos del formulario cuando se envie
             event.preventDefault()
             
             const formData = new FormData(event.target)
 
-            const nombre_comprador = formData.get("nombre_comprador") // nombre_comprador que obtiene el valor del campo nombre_comprador del Form
+            const nombre_comprador = formData.get("nombre_comprador") // Creamos la constante nombre_comprador que obtiene el valor del campo nombre_comprador del Form
 
             function crear_response(contenido) {
                 if (contenido.Success === true) {
-                    console.log(contenido)
                     const id_comprador = contenido.compradores.id
-                    console.log(id_comprador)
                     alert("Su usuario se registró correctamente")
                     window.location.href = `/comprador?id_comprador=${id_comprador}`
                 }
                 else {
-                    console.log(contenido)
                     alert("ERROR")
                 }
             }          
-            // Vinculamos esta página con el endpoint de método PUT
+            // Vinculamos la funcion crear_comprador con el endpoint agregar_comprador() de método POST
             fetch((`http://localhost:5000/compradores`), {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({nombre_comprador: nombre_comprador}) //El campo de la plata no va porque por default es 0
             }).then(response_recibida).then(crear_response).catch(manejar_error)
         }

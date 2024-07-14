@@ -1,6 +1,6 @@
-<!--Esta es página para crear un vendedor-->
+<!--Página para crear un vendedor-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Registrarse como vendedor</h2> 
-                        <form onsubmit="crear_vendedor(event)"> <!--La función crear_vendedor(event) esta vinculada con el script-->
+                        <form onsubmit="crear_vendedor(event)">
                             <div class="mb-3"> <!--Campo del nombre del vendedor-->
                                 <label for="nombre_vendedor" class="form-label">Ingrese su nombre</label>
                                 <input type="text" class="form-control" id="nombre_vendedor" name="nombre_vendedor" placeholder="Juan Quique" required>
@@ -42,20 +42,16 @@
             console.log("ERROR", error)
         }
  
-        // Para hacer funcionar el botón Crear del fomrulario, vinculamos el mismo a la función crear_vendedor(event).
-        function crear_vendedor(event) { // la función recibe el parametro evento que es el evento al enviar el formulario (por el boton de tipo submit)
-            event.preventDefault() //Evita que el formulario se envie y se redireccione
+        function crear_vendedor(event) { // Obtiene los datos del formulario cuando se envie
+            event.preventDefault()
             
-            const formData = new FormData(event.target) // Creamos la constante formData que obtiene los campos con sus valores del form
+            const formData = new FormData(event.target)
 
             const nombre_vendedor = formData.get("nombre_vendedor") // Creamos la constante nombre_vendedor que obtiene el valor del campo nombre_vendedor del form
 
-            function crear_response(contenido) {
+            function crear_response(contenido) { // Confirma si se logro crear con exito, de ser así redirecciona 
                 if (contenido.Success === true) {
-                    console.log(contenido)
-                    // const id = contenido.id Forma vieja de conseguir el id (en simultaneo con el endpoint)
-                    const id = contenido.vendedores.id // Creamos la constante id que obtiene todos los paramaeteros de la constante params que sea id
-                    console.log(id)
+                    const id = contenido.vendedores.id 
                     alert("Su usuario se registró correctamente")
                     window.location.href = `/vendedor?id=${id}`
                 }
@@ -63,7 +59,7 @@
                     alert("ERROR")
                 }
             }          
-            // Vinculamos esta página con el endpoint de método PUT (hay que crear un endpoint con método PUT en la app.py)
+            // Vinculamos la funcion crear_vendedor con el endpoint agregar_vendedor() de método POST
             fetch((`http://localhost:5000/vendedores`), {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({nombre_vendedor: nombre_vendedor})
             }).then(response_recibida).then(crear_response).catch(manejar_error)
         }

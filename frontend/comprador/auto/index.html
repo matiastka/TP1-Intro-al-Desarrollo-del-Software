@@ -1,4 +1,4 @@
-<!--Está es la página de un auto que varia por id y con un comprador loggeado-->
+<!--Página de un auto que varia por id. Con un comprador loggeado-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-12 col-md-10 mx-auto">
                     <div class="card">
-                        <a id="boton_hompage_comprador" class="btn btn-primary" href="">Volver a la página principal </a> <!--Boton que redirecciona a ninguna parte, con id boton_hompage_comprador -->
+                        <a id="boton_hompage_comprador" class="btn btn-primary" href="">Volver a la página principal </a>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="d-flex mt-4">
-                                <button class="card-body btn btn-danger" onclick="comprar_auto()">Comprar</button> <!--Creamos el boton Comprar-->
+                                <button class="card-body btn btn-danger" onclick="comprar_auto()">Comprar</button>
                             </div>
                         </div>
                     </div>
@@ -62,32 +62,34 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        //Creamos las variables globales que se encargan de hacer funcionar correctamente la función obtener_precio_plata(contenido)
+
+        // Creamos las variables globales que se encargan de hacer funcionar correctamente la función obtener_precio_plata(contenido)
         let plata = 0
         let precio = 0
         let plata_obtenida = false
         let precio_obtenido = false
 
+        // Obtenemos el id del comprador y el id del auto por el url
         const parametros = new URLSearchParams(window.location.search)
         const id_comprador = parametros.get("id_comprador")
         const id_auto = parametros.get("id_auto")
-        console.log("Id del comprador:",id_comprador)
-        console.log("Id del auto:",id_auto)
-
+        
+        // Verificamos que el id_comprador exista, de no existir redirecciona a la raiz
         if (id_comprador === null || id_comprador === '') {
             window.location.href = "/"
         }
+        // Verificamos que el id_auto exista, de no existir redirecciona a la pagina principal del comprador loggeado
         if (id_auto === null || id_auto === '') { 
             window.location.href = `/comprador?id_comprador=${id_comprador}` 
         }
         
-        //Al ancor de volver a la página principal le damos la redirección dinámica para que regrese a la homepage del comprador
-        document.getElementById("boton_hompage_comprador").setAttribute("href", `/comprador?id_comprador=${id_comprador}`) // Se para dentro de <a> con id boton_hompage_comprador y en la redirección le brindamos el id_comprador
+        // Al ancor de volver a la página principal le otorgamos el id del comprador en la redirección
+        document.getElementById("boton_hompage_comprador").setAttribute("href", `/comprador?id_comprador=${id_comprador}`)
         
         function response_recibida(respuesta) { 
             return respuesta.json()
         }
-        function obtener_auto(contenido) {
+        function obtener_auto(contenido) { // Obtiene y muestra toda la información de cierto auto por id
             const nombre_del_auto = document.getElementById("titulo_auto") 
             nombre_del_auto.innerText = contenido.nombre_auto 
 
@@ -130,32 +132,29 @@
             ubicacion.innerText = `Ubicación: ${contenido.ubicacion}`
             
             const id_del_propietario = contenido.vendedor_id
-            console.log(id_del_propietario)
-            function obtener_propietario(contenido) {
-                console.log("Tengo las caractersticas del propietario del auto",contenido)
+
+            function obtener_propietario(contenido) { // Obtiene y muestra el nombre del propietario en lugar de su id
                 const id_del_vendedor = document.getElementById("id_vendedor") 
-                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}&id_comprador=${id_comprador}">${contenido.nombre_vendedor}` // Redireccionamos a la página del vendedor de ese auto con dicho id y con el id del usuario logeado.
+                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}&id_comprador=${id_comprador}">${contenido.nombre_vendedor}` // Redireccionamos a la página del propietario del auto
             }
-            // Dentro la función obtener_auto con el endpoit de un vendedor que varía por id
-            fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))  // Hacemos uso de la forma rápida para hacer .then de response y .catch de error porque no sabemos si lee dichas funciones este fecth
+            // Vinculamos la funcion obtener_auto con el endpoint de mostrar_vendedor() (usando la forma abreviada para el response y el error)
+            fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))
 
         }
         function manejar_error(error) {
             console.log("ERROR", error)
         }
-        // Vinculamos la pagina del auto con el endpoint de mostrar un auto variando por id
+        // Vinculamos la pagina con el endpoint de mostrar_auto()
         fetch(`http://localhost:5000/autos/${id_auto}`).then(response_recibida).then(obtener_auto).catch(manejar_error)
 
-        // Para validar que el boton Comprar funcione
-        function comprar_auto() {
+        function comprar_auto() { //Pregunta si se quiere comprar un auto
             const confirmacion = confirm(`¿Esta seguro de que queres comprar el vehículo publicación de id ${id_auto}?`)
             console.log(confirmacion)
             if (!confirmacion) {
                 return
             }
 
-            // Para validar que se pueda comprar un auto
-            function obtener_precio_y_plata(contenido) { // Esta función recibe 2 fetchs generales (que son el contenido) y 2 particular que son respecto a los ifs para editar la plata del comprador.
+            function obtener_precio_y_plata(contenido) { // Esta función recibe 2 fetchs generales (que son el contenido) y 2 particular que son respecto a los if's para editar la plata del comprador.
                 console.log(contenido)
                 if (contenido.plata !== undefined) { // Si analizamos el diccionario del comprador obtiene el valor de la plata
                     plata = contenido.plata
@@ -176,22 +175,23 @@
                             console.log("Soy el console log:",contenido)
                             if (contenido.Success === true) {
                                 alert("¡Ha logrado pagar con exito!")
-                                // Eliminar el auto después de confirmar el pago
+                                // Eliminar el auto después de confirmar el pago (fetch particular)
                                 fetch(`http://127.0.0.1:5000/autos/${id_auto}`, { method: "DELETE" }).then(response_recibida).then(borrar_response).catch(manejar_error)
                             } else {
                                 alert("ERROR")
                             }
                         }
+                        // Restar el precio del auto con la plata del comprador en la base de datos (fetch particular)
                         fetch(`http://localhost:5000/restar_fondos/${id_comprador}`, {method: "PUT",headers: { "Content-Type": "application/json" },body: JSON.stringify({ plata: precio })}).then(response_recibida).then(editar_response).catch(manejar_error)
                     }
                 } // Hasta aca llega el señor gpt
             }
-
+            // Vinculamos la página con los endpoints mostrar_auto() y mostrar_comprador() respectivamente (fetchs generales)
             fetch(`http://localhost:5000/autos/${id_auto}`).then(response_recibida).then(obtener_precio_y_plata).catch(manejar_error)
             fetch(`http://localhost:5000/compradores/${id_comprador}`).then(response_recibida).then(obtener_precio_y_plata).catch(manejar_error)
         }
 
-        function borrar_response(contenido) {
+        function borrar_response(contenido) { // Confirma si se logró comprar con exito y redirecciona
             if (contenido.Success === true) {
                 alert("¡Se ha comprado con exito!")
                 window.location.href = `/comprador?id_comprador=${id_comprador}` // Redireccion a la homepage del comprador

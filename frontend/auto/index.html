@@ -1,4 +1,4 @@
-<!--Está es la página de un auto (varia por id)-->
+<!--Página de un auto (varia por id)-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-12 col-md-10 mx-auto">
                     <div class="card">
-                        <a id="boton_hompage_comprador" class="btn btn-primary" href="/">Volver a la página principal </a> <!--Ancor que redirecciona a la raiz -->
+                        <a class="btn btn-primary" href="/">Volver a la página principal </a> <!--Ancor que redirecciona a la raiz -->
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
@@ -121,12 +121,11 @@
             const id_del_propietario = contenido.vendedor_id // Obtenemos el id del propietario del auto
             
             function obtener_propietario(contenido) { // Obtiene y muestra el nombre del propietario en lugar de su id
-                console.log("Tengo las caractersticas del propietario del auto",contenido)
                 const id_del_vendedor = document.getElementById("id_vendedor")
                 id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}">${contenido.nombre_vendedor}` // Redireccionamos a la página del propietario del auto
             }
-            // // Vinculamos la funcion obtener_auto con el endpoint de mostrar_vendedor() (usando la forma abreviada para el response y el error)
-            fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))  // Hacemos uso de la forma rápida para hacer .then de response y .catch de error porque no sabemos si lee dichas funciones este fecth            
+            // Vinculamos la funcion obtener_auto con el endpoint de mostrar_vendedor() (usando la forma abreviada para el response y el error)
+            fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))
 
         }
         function manejar_error(error) {
