@@ -2,7 +2,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS #importamos CORS para que ande el fetch entre 2 páginas
 
-from models import db, Vendedores, Autos, Compradores
+from models import db, Vendedores, Autos, Compradores #Importamos las tablas de models.py
 
 app = Flask(__name__) #denominamos a flask
 CORS(app) #Con esto van a andar los fetch entre 2 páginas distintas (o una página externa)
@@ -15,7 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 def home():
     return "hola mundo"
 
-@app.route("/autos/<id_auto>") #Endpoint que muestra auto por cierto id
+@app.route("/autos/<id_auto>") #Endpoint que muestra un auto por cierto id
 def mostrar_auto(id_auto):
     try:
         auto = Autos.query.get(id_auto)
@@ -39,7 +39,7 @@ def mostrar_auto(id_auto):
     except: 
         return jsonify({"mensaje":"El auto que buscaste no existe"})
 
-@app.route("/autos/")  #Endpoint que muestra todos los autos
+@app.route("/autos/") #Endpoint que muestra todos los autos
 def mostrar_autos():
     try:
         autos = Autos.query.all()
@@ -71,10 +71,10 @@ def mostrar_autos():
         })
 
 @app.route('/autos/', methods=['POST'])
-def agregar_auto(): #endpoint para agregar un auto
+def agregar_auto(): #Endpoint para agregar un auto
     try:
         data = request.json #Obtiene el contenido del body (por ser metodo POST)
-        nuevo_nombre = data.get('nombre_auto') #Obtiene el valor de la columna nombre_auto
+        nuevo_nombre = data.get('nombre_auto') 
         nueva_marca = data.get('marca')
         nuevo_color = data.get('color')
         nueva_cant_asientos = data.get('cant_asientos')
@@ -102,8 +102,8 @@ def agregar_auto(): #endpoint para agregar un auto
             link=nuevo_link,
             vendedor_id=nuevo_vendedor_id
             )
-        db.session.add(nuevo_auto)
-        db.session.commit()
+        db.session.add(nuevo_auto) #Esto agrega el auto nuevo
+        db.session.commit() #Esto confirma los cambios 
         return jsonify({'autos': {
             'id': nuevo_auto.id, 
             'nombre_auto': nuevo_auto.nombre_auto, 
@@ -125,19 +125,19 @@ def agregar_auto(): #endpoint para agregar un auto
         print('Error', error)
         return jsonify({'mensaje': 'Error interno del server'}), 500
 
-@app.route('/autos/<id_auto>', methods=['DELETE']) #endpoint para eliminar un auto por cierto id
+@app.route('/autos/<id_auto>', methods=['DELETE']) #Endpoint para eliminar un auto por cierto id
 def eliminar_auto(id_auto):
     try:
-        Autos.query.filter(Autos.id == int(id_auto)).delete() #Elimina
-        db.session.commit() #Confirmamos en la base de datos el delete
+        Autos.query.filter(Autos.id == int(id_auto)).delete() #Elimina el auto con el id correspondiente
+        db.session.commit() #Confirmamos en la base de datos el cambio
         return jsonify({'Success': True})
     except:
         return jsonify({'mensaje': 'No existe al auto a borrar'})
 
-@app.route('/autos/<id_auto>', methods=['PUT']) #endpoint para editar un auto por cierto id (pensar como hacer para que sea igual al endpoint de crear autos)
+@app.route('/autos/<id_auto>', methods=['PUT']) #Endpoint para editar un auto por cierto id
 def editar_auto(id_auto):
     try:
-        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        data = request.json
         auto_a_editar = Autos.query.get(id_auto)
 
         auto_a_editar.nombre_auto = data.get('nombre_auto')
@@ -152,7 +152,6 @@ def editar_auto(id_auto):
         auto_a_editar.ubicacion = data.get('ubicacion')
         auto_a_editar.anio = data.get('anio')
         auto_a_editar.link = data.get('link')
-        #auto_a_editar.vendedor_id = data.get('vendedor_id')
         db.session.commit()
 
         return jsonify({'Success': True}), 200
@@ -160,7 +159,7 @@ def editar_auto(id_auto):
         print('Error', error)
         return jsonify({'mensaje': 'Error al editar el auto'}), 500
 
-@app.route('/vendedores/<id_vendedor>') #Endpoint para mostrar un vendedor
+@app.route('/vendedores/<id_vendedor>') #Endpoint para mostrar un vendedor por cierto id
 def mostrar_vendedor(id_vendedor):
     try:
         vendedor = Vendedores.query.get(id_vendedor)
@@ -182,7 +181,7 @@ def mostrar_vendedores():
                 'id': vendedor.id,
                 'nombre_vendedor': vendedor.nombre_vendedor
             }
-            vendedores_data.append(vendedor_data) #Sino va a dentro del for solo apeendea el último.
+            vendedores_data.append(vendedor_data)
         if (len(vendedor_data) == 0):
             return jsonify({"mensaje": 'No hay vendedores'})
         return jsonify(vendedores_data)
@@ -192,10 +191,8 @@ def mostrar_vendedores():
 @app.route('/vendedores', methods=['POST']) #Endpoint para crear un vendedor
 def agregar_vendedor():
     try:
-        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        data = request.json
         nuevo_nombre = data.get('nombre_vendedor') #Obtiene el valor de la columna nombre_comprador
-        #lista_vendedores = Vendedores.query.all()  Forma vieja de conseguir el id del vendedor (en simultaneo con el frontend)
-        #id = len(lista_vendedores) + 1 #Obtenemos el id, contando el largo de la lista (que la lista son los vendedores) le sumamos uno.
         nuevo_vendedor = Vendedores(
             nombre_vendedor=nuevo_nombre
             )
@@ -213,7 +210,7 @@ def agregar_vendedor():
 @app.route('/vendedores/<id_vendedor>', methods=['PUT']) #Endpoint para editar un vendedor
 def editar_vendedor(id_vendedor):
     try:
-        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        data = request.json
         vendedor_a_editar = Vendedores.query.get(id_vendedor)
 
         vendedor_a_editar.nombre_vendedor = data.get('nombre_vendedor')
@@ -224,7 +221,7 @@ def editar_vendedor(id_vendedor):
         print('Error', error)
         return jsonify({'mensaje': 'Error al editar el vendedor'}), 500
 
-@app.route('/compradores/<id_comprador>') #Endpoint para mostrar un comprador
+@app.route('/compradores/<id_comprador>') #Endpoint para mostrar un comprador por cierto id
 def mostrar_comprador(id_comprador):
     try:
         comprador = Compradores.query.get(id_comprador)
@@ -240,7 +237,7 @@ def mostrar_comprador(id_comprador):
 @app.route('/compradores/<id_comprador>', methods=['PUT']) #Endpoint para editar el perfil de un comprador
 def editar_comprador(id_comprador):
     try:
-        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        data = request.json 
         comprador_a_editar = Compradores.query.get(id_comprador)
 
         comprador_a_editar.nombre_comprador = data.get('nombre_comprador')
@@ -254,11 +251,10 @@ def editar_comprador(id_comprador):
 @app.route('/insertar_fondos/<id_comprador>', methods=['PUT'])
 def agregar_fondo(id_comprador):
     try:
-        data = request.json #Obtiene el contenido del body (por ser metodo POST)
+        data = request.json 
         comprador = Compradores.query.get(id_comprador)
-        plata_ingresada = data.get('plata') #Obtiene el valor de la columna nombre_comprador
+        plata_ingresada = data.get('plata') 
         comprador.plata += int(plata_ingresada)
-        print(comprador.plata)
         db.session.commit()
         return jsonify({'Success': True}), 200
     except Exception as error:
@@ -272,7 +268,6 @@ def restar_fondo(id_comprador):
         comprador = Compradores.query.get(id_comprador)
         plata_ingresada = data.get('plata')
         comprador.plata -= int(plata_ingresada)
-        print(comprador.plata)
         db.session.commit()
         return jsonify({'Success': True}), 200
     except Exception as error:
@@ -283,7 +278,7 @@ def restar_fondo(id_comprador):
 def agregar_comprador():
     try:
         data = request.json #Obtiene el contenido del body (por ser metodo POST)
-        nuevo_nombre = data.get('nombre_comprador') #Obtiene el valor de la columna nombre_comprador
+        nuevo_nombre = data.get('nombre_comprador') 
         nueva_plata = data.get('plata')
         nuevo_comprador = Compradores(
             nombre_comprador=nuevo_nombre,
