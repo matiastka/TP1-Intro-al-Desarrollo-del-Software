@@ -14,6 +14,18 @@
 	<li>PSQL</li>
 </ul>
 </div>
+<h2>Instalación</h2>
+<div>
+	
+	cd TP1-Intro-al-Desarrollo-del-Software/
+ 	virtualenv venv
+	source venv/bin/activate
+ 	pip install flask
+  	pip install flask-cors
+   	pip install flask_sqlalchemy
+    pip install psycopg2
+     
+</div>
 <h2>Como correr la pagina web</h2>
 <p>Primero tienes que descargar el repostorio, despues tienes que levantar un servidor para el backend <b>(puedes usar python o flask)</b> y otro para el frontend.</p>
 <h3>Backend</h3>
