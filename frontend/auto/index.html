@@ -7,8 +7,9 @@
     <title>CarTrader</title> 
     
     <!--Para usar Boostrap: -->    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    rel="stylesheet" crossorigin="anonymous">
 
     <style>
         img {
@@ -24,7 +25,10 @@
             <div class="row">
                 <div class="col-12 col-md-10 mx-auto">
                     <div class="card">
-                        <a class="btn btn-primary" href="/">Volver a la página principal </a> <!--Ancor que redirecciona a la raiz -->
+
+                        <!--Ancor que redirecciona a la raiz -->
+                        <a id="boton_hompage_comprador" class="btn btn-primary" href="/">Volver a la página principal </a> 
+                        
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-6">
@@ -57,15 +61,18 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
         crossorigin="anonymous"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         
         // Obtenemos el id del auto por el url
-        const parametros = new URLSearchParams(window.location.search) // Creamos la constante parametros que obtiene todos los parametros del url
-        const id = parametros.get("id") // Creamos la constante id que obtiene todos los parametros de la constante params que sea id
+        // Creamos la constante parametros que obtiene todos los parametros del url
+        const parametros = new URLSearchParams(window.location.search) 
+
+        // Creamos la constante id que obtiene todos los parametros de la constante parametros que sea id
+        const id = parametros.get("id") 
         
         // Verificamos que el id exista, de no existir redirecciona a la raiz
-        if (id == 'null' || id === '' || id == null) { // Si el id no existe (osea es null) entonces redirecciona a la homepage ó si id= es un string vacio
+        // Si el id no existe (osea es null) ó si id= es un string vacio entonces redirecciona a la homepage
+        if (id == 'null' || id === '' || id == null) { 
             window.location.href = "/"
         }
         
@@ -73,13 +80,15 @@
             return respuesta.json()
         }
 
-        function obtener_auto(contenido) { // Obtiene y muestra toda la información de cierto auto por id
-            console.log(contenido)
+        // Obtiene y muestra toda la información de cierto auto por id
+        function obtener_auto(contenido) { 
 
-            const nombre_auto = document.getElementById("titulo_auto") // Creamos la constante nombre_auto que es el h5 con id titulo_auto (misma forma menos para imagen)
+            // Creamos la constante nombre_auto que es el h5 con id titulo_auto (misma forma menos para imagen)
+            const nombre_auto = document.getElementById("titulo_auto") 
             nombre_auto.innerText = contenido.nombre_auto 
 
-            const imagen = document.getElementById("imagen") // Creamos la constante nombre_auto que es el h5 con id titulo_auto (misma forma menos para imagen)
+            //Creamos la constante imagen y le damos el atributo src con el valor del link que se encuentra en el contendio
+            const imagen = document.getElementById("imagen") 
             imagen.setAttribute("src", contenido.link) 
 
             const aniio = document.getElementById("año")
@@ -87,12 +96,14 @@
             
             const caja_man = document.getElementById("tipo_caja_manual") 
             const caja_auto = document.getElementById("tipo_caja_automatica") 
-            console.log(contenido.caja_manual)
-            if (contenido.caja_manual === true) {  // Si caja manual es true entonces escribe en la constante caja manual "Caja manual"
+
+            // Si caja manual es true entonces escribe en la constante caja manual "Caja manual"
+            if (contenido.caja_manual === true) { 
                 caja_man.innerText = "Caja manual"
                 caja_auto.innerText = null 
             }
-            else { // De no serlo escribe en la constante caja automatica "Caja automatica"
+            // De no serlo escribe en la constante caja automatica "Caja automatica"
+            else { 
                 caja_man.innerText = null 
                 caja_auto.innerText = "Caja automatica"
             }
@@ -118,14 +129,22 @@
             const ubicacion = document.getElementById("la_ubicacion")
             ubicacion.innerText = `Ubicación: ${contenido.ubicacion}`
             
-            const id_del_propietario = contenido.vendedor_id // Obtenemos el id del propietario del auto
+            // Obtenemos el id del propietario del auto
+            const id_del_propietario = contenido.vendedor_id 
             
-            function obtener_propietario(contenido) { // Obtiene y muestra el nombre del propietario en lugar de su id
+            // Obtiene y muestra el nombre del propietario en lugar de su id
+            function obtener_propietario(contenido) { 
                 const id_del_vendedor = document.getElementById("id_vendedor")
-                id_del_vendedor.innerHTML = `Nombre del propietario: <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}">${contenido.nombre_vendedor}` // Redireccionamos a la página del propietario del auto
+
+                // Redireccionamos a la página del propietario del auto
+                id_del_vendedor.innerHTML = `Nombre del propietario: 
+                <a href="autos_vendedor?id_pagina_vendedor=${id_del_propietario}">${contenido.nombre_vendedor}` 
             }
-            // Vinculamos la funcion obtener_auto con el endpoint de mostrar_vendedor() (usando la forma abreviada para el response y el error)
-            fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json()) .then(obtener_propietario).catch((error) => console.log("Error", error))
+
+            // Vinculamos la funcion obtener_auto con el endpoint de mostrar_vendedor() 
+            // (usando la forma abreviada para el response y el error)
+            fetch(`http://localhost:5000/vendedores/${contenido.vendedor_id}`).then((respuesta) => respuesta.json())
+            .then(obtener_propietario).catch((error) => console.log("Error", error))
 
         }
         function manejar_error(error) {

@@ -7,7 +7,9 @@
     <title>CarTrader</title>
 
     <!--Para usar boostrap:-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+    crossorigin="anonymous" rel="stylesheet" >
     
 
 </head>
@@ -21,27 +23,32 @@
                         <form onsubmit="crear_auto(event)"> 
                             <div class="mb-3"> 
                                 <label for="name" class="form-label">Nombre del auto</label>
-                                <input type="text" class="form-control" id="nombre_auto" name="nombre_auto" placeholder="Ranger" required>
+                                <input type="text" class="form-control" id="nombre_auto" 
+                                name="nombre_auto" placeholder="Ranger" required>
                             </div>
 
                             <div class="mb-3"> 
                                 <label for="anio" class="form-label">Año</label>
-                                <input type="number" class="form-control" id="anio" min="1886" max="2100" name="anio" placeholder="2015" required>
+                                <input type="number" class="form-control" id="anio" min="1886" 
+                                max="2100" name="anio" placeholder="2015" required>
                             </div>
 
                             <div class="mb-3"> 
                                 <label for="cant_asientos" class="form-label">Cantidad de asientos</label>
-                                <input type="number" class="form-control" id="cant_asientos" min="1" max="50" name="cant_asientos" placeholder="5" required>
+                                <input type="number" class="form-control" id="cant_asientos" min="1" 
+                                max="50" name="cant_asientos" placeholder="5" required>
                             </div>
 
                             <label class="mb-3 me-3"> Tipo de caja: </label> 
                             <div class="form-check form-check-inline"> 
-                                <input class="form-check-input" value="caja_automatica" type="radio" name="caja" id="caja_automatica" required>
+                                <input class="form-check-input" value="caja_automatica" type="radio" 
+                                name="caja" id="caja_automatica" required>
                                 <label class="form-check-label" for="caja_automatica">Caja automatica</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" value="caja_manual" type="radio" name="caja" id="caja_manual" required>
+                                <input class="form-check-input" value="caja_manual" type="radio" 
+                                name="caja" id="caja_manual" required>
                                 <label class="form-check-label" for="caja_manual">Caja manual</label>
                             </div>
 
@@ -52,7 +59,8 @@
                             
                             <div class="mb-3"> 
                                 <label for="kilometros" class="form-label">Kilometros</label>
-                                <input type="number" class="form-control" id="kilometros" min="0" max="999999" name="kilometros" placeholder="0" required>
+                                <input type="number" class="form-control" id="kilometros" min="0" 
+                                max="999999" name="kilometros" placeholder="0" required>
                             </div>
 
                             <div class="mb-3"> 
@@ -67,7 +75,8 @@
 
                             <div class="mb-3"> 
                                 <label for="precio" class="form-label">Precio (USD)</label>
-                                <input type="number" class="form-control" id="precio" min="1" max="999999"name="precio" placeholder="1000" required>
+                                <input type="number" class="form-control" id="precio" min="1" 
+                                max="999999"name="precio" placeholder="1000" required>
                             </div>
 
                             <label for="baul mb-1">Tipo de Baúl</label> 
@@ -79,7 +88,8 @@
 
                             <div class="mb-3"> 
                                 <label for="ubicacion" class="form-label">Ubicación</label>
-                                <input type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="CABA" required>
+                                <input type="text" class="form-control" id="ubicacion" 
+                                name="ubicacion" placeholder="CABA" required>
                             </div>
 
                             <div class="d-flex">
@@ -92,18 +102,22 @@
                 </div>
             </div>
         </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+    crossorigin="anonymous"></script>
     <script>
+
+        // Obtenemos el id del propietario de los autos
         const parametros = new URLSearchParams(window.location.search) 
         const id = parametros.get("id") 
-        //console.log(id)
 
+        // Verificamos que el id del vendedor exista, de no existir redirecciona a la raiz
         if (id == 'null' || id === '' || id == null) {
             window.location.href = "/"
         }
 
-        // Actualizamos dinámicamente la redirección del ancor cancelar
-        document.getElementById("boton_cancelar").setAttribute("href", `/vendedor?id=${id} `) // Se para dentro de <a> con id boton_cancelar y le brindamos el id del comprador en el link 
+        // Al ancor Cancelar le brindamos el id del vendedor en el link.
+        document.getElementById("boton_cancelar").setAttribute("href", `/vendedor?id=${id} `) 
 
         function response_recibida(respuesta) { 
             return respuesta.json()
@@ -113,15 +127,23 @@
             console.log("ERROR", error)
         }
  
-        
+        // Para aplicar los cambios realizados en el formulario lo vinculamos cuando se envie 
+        // (usando el onsubmit con  el nombre de la funcion).
+        // Crea un auto nuevo con los datos que el vendedor envia en el formulario
         function crear_auto(event) { 
             event.preventDefault() 
             
+            // formData es un contenedor que obtiene todos los valores del Form
             const formData = new FormData(event.target) 
 
-            const nombre_auto = formData.get("nombre_auto")  // Creamos la constante nombre_auto que obtiene la data del formulario con id nombre_auto
+            // nombre_auto obtiene la data del formulario con id nombre_auto
+            const nombre_auto = formData.get("nombre_auto")  
+
+            // Idem hasta el final
             const anio = formData.get("anio") 
-            const caja = formData.get("caja") // Obtenemos el valor del grupo de radio buttons con nombre "caja"
+            
+            // Obtenemos el valor del grupo de radio buttons con nombre "caja"
+            const caja = formData.get("caja") 
             let caja_automatica, caja_manual
             if (caja === "caja_automatica") {
                 caja_automatica = true
@@ -142,21 +164,35 @@
             const tipo_baul = formData.get("tipo_baul") 
             const ubicacion = formData.get("ubicacion")
 
-            // Función que brinda la respuesta que queremos del endpoint
+            // Brinda la respuesta que queremos del endpoint
             function crear_response(contenido) {
-                console.log(contenido)
                 if (contenido.Success === true) {
-                    console.log(contenido)
-                    console.log(contenido.autos)
-                    console.log(contenido.autos.id)
                     alert("La publicación se ha creado con exito")
-                    window.location.href = `/vendedor/auto?id_auto=${contenido.autos.id}&id=${id}` // Redireccionamos a la página del auto nuevo con su id y con el id del vendedor.
+
+                    // Redireccionamos a la página del auto nuevo con su id y con el id del vendedor
+                    window.location.href = `/vendedor/auto?id_auto=${contenido.autos.id}&id=${id}` 
                 }
                 else {
                     alert("ERROR")
                 }
             }          
-            fetch((`http://localhost:5000/autos/`), {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({nombre_auto: nombre_auto,anio: anio,caja_automatica: caja_automatica,caja_manual: caja_manual,cant_asientos: cant_asientos,color: color,kilometros: kilometros,link: link,marca: marca,precio: precio,tipo_baul: tipo_baul,ubicacion: ubicacion, vendedor_id: id})
+
+            // Vinculamos la función crear_auto con el endpoint agregar_auto() con el método POST
+            fetch((`http://localhost:5000/autos/`), {method: "POST", headers: {"Content-Type": "application/json"}, 
+            body: JSON.stringify({nombre_auto: nombre_auto,
+                                  anio: anio,
+                                  caja_automatica: caja_automatica,
+                                  caja_manual: caja_manual,
+                                  cant_asientos: cant_asientos,
+                                  color: color,
+                                  kilometros: kilometros,
+                                  link: link,
+                                  marca: marca,
+                                  precio: precio,                                
+                                  tipo_baul: tipo_baul,
+                                  ubicacion: ubicacion, 
+                                  vendedor_id: id
+                                })
             }).then(response_recibida).then(crear_response).catch(manejar_error)
         }
     </script>

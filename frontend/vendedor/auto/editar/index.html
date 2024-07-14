@@ -7,117 +7,131 @@
     <title>CarTrader</title>
 
     <!--Para usar boostrap:-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"  
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+    crossorigin="anonymous" rel="stylesheet">
 
 </head>
-<body data-bs-theme="dark"> <!--Hacemos la página modo oscura (por Boostrap)-->
+<body data-bs-theme="dark">
     <div class="container my-4">
         <div class="row">
             <div class="col-12 col-md-10 col-lg-6 mx-auto">
                 <div class="card">
                     <div class="card-body">
                         <h2 class="card-title">Editar Auto</h2> 
-                        <form onsubmit="modificar_auto(event)"> <!--La función modificar_auto(event) esta vinculada con el endpoint-->
-                            <div class="mb-3"> <!--Campo del nombre del auto-->
+                        <form onsubmit="modificar_auto(event)">
+                            <div class="mb-3">
                                 <label for="nombre_auto" class="form-label">Nombre del auto</label>
-                                <input type="text" class="form-control" id="nombre_auto" name="nombre_auto" placeholder="Ranger" required>
+                                <input type="text" class="form-control" id="nombre_auto" 
+                                name="nombre_auto" placeholder="Ranger" required>
                             </div>
 
-                            <div class="mb-3"> <!--Campo del año-->
+                            <div class="mb-3">
                                 <label for="anio" class="form-label">Año</label>
-                                <input type="number" class="form-control" id="anio" min="1886" max="2100" name="anio" placeholder="2015" required>
+                                <input type="number" class="form-control" id="anio" min="1886" 
+                                max="2100" name="anio" placeholder="2015" required>
                             </div>
 
-                            <div class="mb-3"> <!--Campo de la cantidad de asientos-->
+                            <div class="mb-3">
                                 <label for="cant_asientos" class="form-label">Cantidad de asientos</label>
-                                <input type="number" class="form-control" id="cant_asientos" min="1" max="50" name="cant_asientos" placeholder="5" required>
+                                <input type="number" class="form-control" id="cant_asientos" min="1" 
+                                max="50" name="cant_asientos" placeholder="5" required>
                             </div>
 
-                            <label class="mb-3 me-3"> Tipo de caja: </label>  <!-- Campo de la caja automatica-->
-                            <div class="form-check form-check-inline"> <!-- puede ser que el value = "true" tenga que ser value = "True"-->
-                                <input class="form-check-input" value="caja_automatica" type="radio" name="caja" id="caja_automatica" required>
+                            <label class="mb-3 me-3"> Tipo de caja: </label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" value="caja_automatica" type="radio" 
+                                name="caja" id="caja_automatica" required>
                                 <label class="form-check-label" for="caja_automatica">Caja automatica</label>
                             </div>
                             
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" value="caja_manual" type="radio" name="caja" id="caja_manual" required>
+                                <input class="form-check-input" value="caja_manual" type="radio" 
+                                name="caja" id="caja_manual" required>
                                 <label class="form-check-label" for="caja_manual">Caja manual</label>
                             </div>
 
-                            <div class="mb-3"> <!-- Campo del color-->
+                            <div class="mb-3">
                                 <label for="color" class="form-label">Color</label>
                                 <input type="text" class="form-control" id="color" name="color" placeholder="Rojo" required>
                             </div>
                             
-                            <div class="mb-3"> <!--Campo de los kilometros-->
+                            <div class="mb-3">
                                 <label for="kilometros" class="form-label">Kilometros</label>
-                                <input type="number" class="form-control" id="kilometros" name="kilometros" min="0" max="999999" placeholder="0" required>
+                                <input type="number" class="form-control" id="kilometros" name="kilometros" 
+                                min="0" max="999999" placeholder="0" required>
                             </div>
 
-                            <div class="mb-3"> <!--Campo del link (la imagen)-->
+                            <div class="mb-3">
                                 <label for="link" class="form-label">Link de la imagen</label>
                                 <input type="img" class="form-control" id="link" name="link" required>
                             </div>
 
-                            <div class="mb-3"> <!-- Campo de la marca-->
+                            <div class="mb-3">
                                 <label for="marca" class="form-label">Marca</label>
                                 <input type="text" class="form-control" id="marca" name="marca" placeholder="Fiat" required>
                             </div>
 
-                            <div class="mb-3"> <!--Campo del precio-->
+                            <div class="mb-3">
                                 <label for="precio" class="form-label">Precio (USD)</label>
-                                <input type="number" class="form-control" id="precio" min="1" max="999999" name="precio" placeholder="1000" required>
+                                <input type="number" class="form-control" id="precio" min="1" 
+                                max="999999" name="precio" placeholder="1000" required>
                             </div>
 
-                            <label for="baul mb-1">Tipo de Baúl</label> <!--Campo del tipo_baul-->
+                            <label for="baul mb-1">Tipo de Baúl</label>
                             <select class="form-select mb-3" id="tipo_baul" name="tipo_baul">
                                 <option value="grande">Grande</option>
                                 <option value="mediano">Mediano</option>
                                 <option value="chico">Chico</option>
                             </select>
 
-                            <div class="mb-3"> <!-- Campo de la ubicación-->
+                            <div class="mb-3">
                                 <label for="ubicacion" class="form-label">Ubicación</label>
-                                <input type="text" class="form-control" id="ubicacion" name="ubicacion" placeholder="CABA" required>
+                                <input type="text" class="form-control" id="ubicacion" name="ubicacion" 
+                                placeholder="CABA" required>
                             </div>
 
-                            <div class="d-flex"> <!-- d-flex permite que los botones de esta clase tengan margen. Cortesía de Aria-->
+                            <div class="d-flex">
                                 <button type="submit" class="btn btn-success" style="margin-right: auto">Aplicar</button>
                                 <a id="boton_cancelar" class="btn btn-danger" href="" style="margin-left: auto">Cancelar</a>
                             </div>
-
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+    crossorigin="anonymous"></script>
     <script>
-        // Necesitamos obtener los datos cargados de cada auto variando por el id del vendedor
-        // Extraemos ambos ids:
+
+        // Obtenemos el id del propietario de los autos y el id del auto
         const params = new URLSearchParams(window.location.search)
         const id = params.get("id")
         const id_auto = params.get("id_auto")
 
+        // Verificamos que el id del vendedor exista, de no existir redirecciona a la raiz
         if (id == 'null' || id === '' || id == null) {
-            window.location.href = "/" // Si el id no existe entonces redirecciona a la homepage
+            window.location.href = "/"
         }
 
+        // Verificamos que el id_auto exista, de no existir redirecciona a la pagina principal del vendedor loggeado
         if (id_auto == 'null' || id_auto === '' || id_auto == null) { 
-            window.location.href = `/vendedor?id=${id}` // Si el id_auto no existe entonces redirecciona a la homepage del vendedor
+            window.location.href = `/vendedor?id=${id}`
         }
 
-        // Actualizamos dinámicamente la redirección del ancor cancelar
+        // Al ancor Cancelar le brindamos el id del auto y del vendedor en el link.
         document.getElementById("boton_cancelar").setAttribute("href", `/vendedor/auto?id_auto=${id_auto}&id=${id} `)
 
         function response_recibida(respuesta) { 
             return respuesta.json()
         }
+
         // Funcion que nos da todos los datos del auto
-        function obtener_auto(contenido) { // Obtenemos todos lsos datos cargados de cada input del auto
-            document.getElementById("nombre_auto").value = contenido.nombre_auto // Dentro del campo nombre_auto se le asigna el valor del json de nombre_auto
-            document.getElementById("anio").value = contenido.anio // idem hasta el final
+        function obtener_auto(contenido) { // Carga los datos al formulario
+            document.getElementById("nombre_auto").value = contenido.nombre_auto
+            document.getElementById("anio").value = contenido.anio
             if (contenido.caja_automatica === true) {
                 document.getElementById("caja_automatica").checked = true
             }
@@ -133,21 +147,31 @@
             document.getElementById("tipo_baul").value = contenido.tipo_baul
             document.getElementById("ubicacion").value = contenido.ubicacion
         }
+
         function manejar_error(error) {
             console.log("ERROR", error)
         }
+
         // Vinculamos la pagina con el endpoint que obtiene el id del auto para obtener la info de cierto auto
         fetch(`http://localhost:5000/autos/${id_auto}`).then(response_recibida).then(obtener_auto).catch(manejar_error)
 
-        // Para que se apliquen los cambios, vinculamos el formulario cuando se envie a la función modificar_auto.
-        function modificar_auto(event) { // la función recibe el parametro evento que es el evento de submmit
-            event.preventDefault() //Evita que el formulario se envie y que se redireccione
-            
-            const formData = new FormData(event.target) // Creamos la constante formData que es un contenedor que obtiene todos nuestros valores del form
+        // Para aplicar los cambios realizados en el formulario lo vinculamos cuando se envie 
+        // (usando el onsubmit con  el nombre de la funcion).
+        // Obtiene los datos del formulario cuando se envie
+        function modificar_auto(event) { 
+            event.preventDefault() 
 
-            const nombre_auto = formData.get("nombre_auto") // Creamos la constante nombre_auto que obtiene la data del formulario con id nombre_auto
-            const anio = formData.get("anio") // Idem hasta el final
-            const caja = formData.get("caja") // Obtenemos el valor del grupo de radio buttons con nombre "caja"
+            // formData es un contenedor que obtiene todos los valores del Form
+            const formData = new FormData(event.target) 
+
+            // nombre_auto obtiene la data del formulario con id nombre_auto
+            const nombre_auto = formData.get("nombre_auto") 
+
+            // Idem hasta el final
+            const anio = formData.get("anio") 
+
+            // Obtenemos el valor del grupo de radio buttons con nombre "caja"
+            const caja = formData.get("caja") 
             let caja_automatica, caja_manual
             if (caja === "caja_automatica") {
                 caja_automatica = true
@@ -169,18 +193,32 @@
             const ubicacion = formData.get("ubicacion")  
 
             function editar_response(contenido) {
-                console.log(contenido)
                 if (contenido.Success === true) {
-                    console.log(contenido)
                     alert("La publicación se ha editado con exito")
-                    window.location.href = `/vendedor/auto?id_auto=${id_auto}&id=${id}` // Tenemos que redireccionar a la página del personaje nuevo con su id porque lo pide el endpoint en el return
+
+                    // Redireccionamos a la página del auto con su id y con el id del vendedor
+                    window.location.href = `/vendedor/auto?id_auto=${id_auto}&id=${id}` 
                 }
                 else {
                     alert("ERROR")
                 }
-            }          
-            // Vinculamos la función modificar_auto con el endpoint de método PUT
-            fetch((`http://localhost:5000/autos/${id_auto}`), {method: "PUT", headers: {"Content-Type": "application/json"}, body: JSON.stringify({nombre_auto: nombre_auto,anio: anio,caja_automatica: caja_automatica,caja_manual: caja_manual,cant_asientos: cant_asientos,color: color,kilometros: kilometros,link: link,marca: marca,precio: precio,tipo_baul: tipo_baul,ubicacion: ubicacion})
+            }  
+
+            // Vinculamos la función modificar_auto con el endpoint editar_auto() con el método PUT
+            fetch((`http://localhost:5000/autos/${id_auto}`), {method: "PUT", headers: {"Content-Type": "application/json"}, 
+            body: JSON.stringify({nombre_auto: nombre_auto,
+                                 anio: anio,
+                                 caja_automatica: caja_automatica,
+                                 caja_manual: caja_manual,
+                                 cant_asientos: cant_asientos,
+                                 color: color,
+                                 kilometros: kilometros,
+                                 link: link,
+                                 marca: marca,
+                                 precio: precio,
+                                 tipo_baul: tipo_baul,
+                                 ubicacion: ubicacion
+                                 })
             }).then(response_recibida).then(editar_response).catch(manejar_error)
         }
     </script>
